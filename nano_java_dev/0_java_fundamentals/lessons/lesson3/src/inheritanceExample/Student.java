@@ -3,7 +3,7 @@ package inheritanceExample;
 public class Student extends Person {
     private String studentId;
 
-    public Student (String firstName, String lastName, String studentId) {
+    public Student(String firstName, String lastName, String studentId) {
         super(firstName, lastName);
         this.studentId = studentId;
     }
