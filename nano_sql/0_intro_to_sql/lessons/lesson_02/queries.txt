@@ -29,5 +29,78 @@ join region r
 on s.region_id = r.id
 
 ################################################################################
-# 2021-7-21
+# 2021-7-24
 # query 1
+select s.name, r.name, a.name
+from sales_reps s
+join region r
+on s.region_id = r.id
+and r.name = 'Midwest'
+join accounts a
+on s.id = a.sales_rep_id
+order by a.name
+
+# query 2
+select s.name, r.name, a.name
+from sales_reps s
+join region r
+on s.region_id = r.id and r.name = 'Midwest' and s.name like 'S%'
+join accounts a
+on s.id = a.sales_rep_id
+order by a.name
+
+# 3
+select s.name, r.name, a.name
+from sales_reps s
+join region r
+on s.region_id = r.id and r.name = 'Midwest' and s.name like '% K%'
+join accounts a
+on s.id = a.sales_rep_id
+order by a.name
+
+# 4
+select r.name, a.name, o.total_amt_usd/(total + 0.01) as unit_price
+from sales_reps s
+join region r
+on s.region_id = r.id
+join accounts a
+on s.id = a.sales_rep_id
+join orders o
+on a.id = o.account_id and o.standard_qty > 100
+order by a.name
+
+# 5
+select r.name, a.name, round(o.total_amt_usd/(total + 0.01), 2) as unit_price
+from sales_reps s
+join region r
+on s.region_id = r.id
+join accounts a
+on s.id = a.sales_rep_id
+join orders o
+on a.id = o.account_id and o.standard_qty > 100 and o.poster_qty > 50
+order by unit_price
+
+# 6
+select r.name, a.name, round(o.total_amt_usd/(total + 0.01), 2) as unit_price
+from sales_reps s
+join region r
+on s.region_id = r.id
+join accounts a
+on s.id = a.sales_rep_id
+join orders o
+on a.id = o.account_id and o.standard_qty > 100 and o.poster_qty > 50
+order by unit_price desc
+
+# 7
+select distinct a.name, w.channel
+from accounts a
+join web_events w
+on a.id = w.account_id and a.id = 1001
+
+# 8
+select w.occurred_at, a.name, o.total, o.total_amt_usd
+from accounts a
+join web_events w
+on a.id = w.account_id and extract(year from occurred_at) = 2015
+join orders o
+on a.id = o.account_id
