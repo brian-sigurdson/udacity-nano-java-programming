@@ -23,6 +23,7 @@ hs_err_pid*
 .idea
 .gradle
 settings.gradle
+*.iml
 
 # temp files
 .swp
