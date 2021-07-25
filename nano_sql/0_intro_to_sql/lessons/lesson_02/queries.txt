@@ -104,3 +104,77 @@ join web_events w
 on a.id = w.account_id and extract(year from occurred_at) = 2015
 join orders o
 on a.id = o.account_id
+
+# 2021-07-25
+# 1
+select sum(poster_qty)
+from orders
+
+# 2
+select sum(standard_qty)
+from orders
+
+# 3
+select sum(total_amt_usd)
+from orders
+
+# 4
+select id, sum(standard_amt_usd) as Total_Standard_USD, sum(gloss_amt_usd) as Total_Gloss_USD
+from orders
+group by id
+
+# 5
+select round(sum(standard_amt_usd)/sum(standard_qty),2) as Standard_Per_Unit
+from orders
+
+# group by 
+# 1
+select a.name, o.occurred_at
+from accounts a
+join orders o
+on a.id = o.account_id
+order by o.occurred_at
+limit 1
+
+# 2
+select a.name, sum(o.total_amt_usd)
+from accounts a
+join orders o
+on a.id = o.account_id
+group by a.name
+
+# 3
+select a.name, w.channel, w.occurred_at
+from web_events w
+join accounts a
+on w.account_id = a.id
+order by w.occurred_at
+limit 1
+
+# 4
+select channel, count(channel)
+from web_events
+group by channel
+
+# 5
+select a.primary_poc, w.occurred_at
+from web_events w
+join accounts a
+on  w.account_id = a.id
+order by w.occurred_at desc
+limit 1
+
+# 6
+select a.name, min(total_amt_usd) Min_USD
+from orders o
+join accounts a
+on a.id = o.account_id
+group by a.name
+order by Min_USD, a.name
+
+#7
+select r.name, count(s.id)
+from sales_reps s
+join region r
+on s.region_id = r.id
+group by r.name
