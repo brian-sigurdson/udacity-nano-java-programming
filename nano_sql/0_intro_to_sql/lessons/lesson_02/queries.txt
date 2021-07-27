@@ -178,3 +178,58 @@ from sales_reps s
 join region r
 on s.region_id = r.id
 group by r.name
+
+# 2021-7-26
+# 1
+select a.name, round(avg(o.standard_qty),2), round(avg(o.gloss_qty),2), round(avg(o.poster_qty),2)
+from accounts a
+join orders o
+on a.id = o.account_id
+group by a.name
+
+# 2
+select a.name, round(avg(o.standard_amt_usd),2), round(avg(o.gloss_amt_usd),2), round(avg(o.poster_amt_usd),2)
+from accounts a
+join orders o
+on a.id = o.account_id
+group by a.name
+
+# 3
+select s.name, w.channel, count(w.channel) as channel_count
+from accounts a
+join sales_reps s
+on a.sales_rep_id = s.id
+join web_events w
+on a.id = w.account_id
+group by s.name, w.channel
+order by channel_count desc
+
+# 4
+select r.name, w.channel, count(w.channel) as channel_count
+from accounts a
+join sales_reps s
+on a.sales_rep_id = s.id
+join web_events w
+on a.id = w.account_id
+join region r
+on s.region_id = r.id
+group by r.name, w.channel
+order by channel_count desc
+
+# 5
+select distinct a.name as account_name, r.name as region_name
+from accounts a
+join sales_reps s
+on a.sales_rep_id = s.id
+join region r
+on s.region_id = r.id
+order by account_name, region_name
+
+# 6
+select distinct s.name as rep_name, a.name as account_name
+from accounts a
+join sales_reps s
+on a.sales_rep_id = s.id
+order by rep_name, account_name
+
+# 7
