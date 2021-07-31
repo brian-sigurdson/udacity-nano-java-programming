@@ -14,9 +14,18 @@ public class MainMenu {
     private static Scanner scanner = new Scanner(System.in);
 
     /**
+     * Entry point to the application.
+     *
+     * @param args the return value to the operating system
+     */
+    public static void main(String[] args) {
+        MainMenu.getUserSelection();
+    }
+
+    /**
      * The main menu.
      */
-    public static void displayMainMenu() {
+    private static void displayMainMenu() {
         System.out.println("--------------------------------------------------");
         System.out.println("1. Find and reserve a room");
         System.out.println("2. See my reservations");
@@ -31,9 +40,7 @@ public class MainMenu {
     // TODO: incorporate scanner
 
     /**
-     * A method to get the user's desired menu selection.
-     *
-     * @return An int representing the selected menu item.
+     * A method to let the user process various actions.
      */
     public static void getUserSelection(){
 
@@ -57,19 +64,15 @@ public class MainMenu {
             switch (optionNumber) {
                 case 1:
                     System.out.println("1. Find and reserve a room");
-                    stopNow = true;
                     break;
                 case 2:
                     System.out.println("2. See my reservations");
-                    stopNow = true;
                     break;
                 case 3:
                     System.out.println("3. Create an account");
-                    stopNow = true;
                     break;
                 case 4:
                     System.out.println("4. Admin");
-                    stopNow = true;
                     break;
                 case 5:
                     System.out.println("5. Exit");
