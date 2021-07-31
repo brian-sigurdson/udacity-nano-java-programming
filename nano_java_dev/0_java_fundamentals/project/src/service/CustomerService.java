@@ -9,15 +9,15 @@ import java.util.Collection;
 public class CustomerService {
     private static Collection<Customer> theCustomers;
 
-    public void addCustomer(String email, String firstName, String lastName) {
-
-    }
-
-    public Customer getCustomer(String customerEmail) {
-
-    }
-
-    public Collection<Customer> getAllCustomers() {
-
-    }
+//    public void addCustomer(String email, String firstName, String lastName) {
+//
+//    }
+//
+//    public Customer getCustomer(String customerEmail) {
+//
+//    }
+//
+//    public Collection<Customer> getAllCustomers() {
+//
+//    }
 }

@@ -1,6 +1,12 @@
 package ui;
 
-// TODO: incorporate scanner
+/**
+ * A class to provide an administrative menu and gather user input.
+ *
+ * @author Brian Sigurdson
+ */
+
+
 
 public class AdminMenu {
 
@@ -11,4 +17,6 @@ public class AdminMenu {
         System.out.println("4. Add a Room");
         System.out.println("5. Back to Main Menu");
     }
+
+    // TODO: incorporate scanner
 }

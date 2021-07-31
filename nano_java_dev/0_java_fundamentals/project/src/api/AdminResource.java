@@ -1,7 +1,7 @@
 package api;
 
-import model.Customer;
-import model.IRoom;
+//import model.Customer;
+//import model.IRoom;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,24 +19,24 @@ public class AdminResource {
     // I'm suppose to provide a static reference, but not sure to what just yet
     // private static Collection<>
 
-    public Customer getCustomer(String email) {
-
-    }
-
-    public void addRoom(List<IRoom> rooms) {
-
-    }
-
-    public Collection<IRoom> getAllRooms() {
-
-    }
-
-    public Collection<Customer> getAllCustomers() {
-
-    }
-
-    public void displayAllReservations() {
-
-    }
+//    public Customer getCustomer(String email) {
+//
+//    }
+//
+//    public void addRoom(List<IRoom> rooms) {
+//
+//    }
+//
+//    public Collection<IRoom> getAllRooms() {
+//
+//    }
+//
+//    public Collection<Customer> getAllCustomers() {
+//
+//    }
+//
+//    public void displayAllReservations() {
+//
+//    }
 
 }

@@ -19,28 +19,28 @@ The HotelResource will have the following methods:
 public class HotelResource {
     private static Collection<Reservation> reservations;
 
-    public Customer getCustomer(String email) {
-
-    }
-
-    public void createACustomer(String email, String firstName, String lastName) {
-
-    }
-
-    public IRoom getRoom(String roomNumber) {
-
-    }
-
-    public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
-
-    }
-
-    public Collection<Reservation> getCustomerReservations(String customerEmail) {
-
-    }
-
-    public Collection<IRoom> findARoom(Date checkIn, Date checkOut) {
-
-    }
+//    public Customer getCustomer(String email) {
+//
+//    }
+//
+//    public void createACustomer(String email, String firstName, String lastName) {
+//
+//    }
+//
+//    public IRoom getRoom(String roomNumber) {
+//
+//    }
+//
+//    public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
+//
+//    }
+//
+//    public Collection<Reservation> getCustomerReservations(String customerEmail) {
+//
+//    }
+//
+//    public Collection<IRoom> findARoom(Date checkIn, Date checkOut) {
+//
+//    }
 
 }
