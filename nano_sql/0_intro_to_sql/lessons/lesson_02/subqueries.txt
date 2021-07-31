@@ -1,0 +1,26 @@
+# sub queries
+# 1
+select date_trunc('day', w.occurred_at) as day, w.channel as channel, count(*) as event_count
+from web_events w
+group by 1, 2
+order by 3 desc
+
+# 2
+-- num events for each day for each channel
+select date_trunc('day', w.occurred_at) as day, w.channel as channel, count(*) as event_count
+from web_events w
+group by 1, 2
+order by 3 desc
+
+# 3
+# good one, but brain dead when I finally got it.
+-- avg events per channel
+select sub.channel, round(avg(sub.event_count),2)
+from (
+	-- number of events for each day for each channel
+	select date_trunc('day', w.occurred_at) as day, w.channel as channel, count(*) as event_count
+	from web_events w
+	group by 1, 2
+	order by 3 desc
+) sub
+group by 1
