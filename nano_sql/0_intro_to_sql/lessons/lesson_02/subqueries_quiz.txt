@@ -1,0 +1,27 @@
+# Provide the name of the sales_rep in each region with the largest amount of total_amt_usd sales.
+
+select t3.region_name, t3.rep_name, t3.total_sales
+from (
+         -- sales for region by rep
+         select r.name as region_name, sr.name as rep_name, sum(o.total_amt_usd) total_sales
+         from accounts a
+                  join orders o on a.id = o.account_id
+                  join sales_reps sr on a.sales_rep_id = sr.id
+                  join region r on sr.region_id = r.id
+         group by 1, 2
+     ) as t3
+join (
+        select t1.region_name, max(t1.total_sales) as total_sales
+        from (
+             -- sales for region by rep
+             select r.name as region_name, sr.name as rep_name, sum(o.total_amt_usd) total_sales
+             from accounts a
+                      join orders o on a.id = o.account_id
+                      join sales_reps sr on a.sales_rep_id = sr.id
+                      join region r on sr.region_id = r.id
+             group by 1, 2
+         ) as t1
+        group by 1
+    ) as t2
+on t3.region_name = t2.region_name and t2.total_sales = t3.total_sales
+
