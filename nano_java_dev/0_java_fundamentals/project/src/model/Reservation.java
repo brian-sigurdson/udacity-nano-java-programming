@@ -5,6 +5,7 @@ import java.util.Date;
 public class Reservation {
     private Customer customer;
     private IRoom room;
+    // TODO: consider replacing with java.time.* classes
     private Date checkInDate;
     private Date checkOutDate;
 

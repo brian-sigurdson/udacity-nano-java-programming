@@ -44,5 +44,26 @@ public class Customer {
         return "First name: " + firstName + "; Last name: " + lastName + "; email: " + email;
     }
 
-    // TODO: override equals and hascode
+    @Override
+    public boolean equals(Object object) {
+        if (object == this){
+            return true;
+        } else if (!(object instanceof Customer)) {
+            return false;
+        } else {
+            Customer customer = (Customer) object;
+            return customer.email.equalsIgnoreCase(this.email) &&
+                    customer.firstName.equalsIgnoreCase(this.firstName) &&
+                    customer.lastName.equalsIgnoreCase(this.lastName);
+        }
+    }
+
+    @Override
+    public int hashCode () {
+        // The recipe for a proper hash code, from Effective Java 3rd ed.
+        int result = email.hashCode();
+        result += 31 + firstName.hashCode();
+        result += 31 + lastName.hashCode();
+        return result;
+    }
 }
