@@ -15,4 +15,6 @@ public class Reservation {
         return "RESERVATION DETAILS: " +
                 "Customer [" + customer + "] Room [" + room + "] Checkin [" + checkInDate + "] Checkout [" + checkOutDate + "]";
     }
+
+    // TODO: override equals and hascode
 }

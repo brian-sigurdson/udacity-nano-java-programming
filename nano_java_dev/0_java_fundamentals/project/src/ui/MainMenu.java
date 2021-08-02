@@ -1,5 +1,7 @@
 package ui;
 
+import api.HotelResource;
+
 import java.util.Scanner;
 
 /**
@@ -26,6 +28,7 @@ public class MainMenu {
      * The main menu.
      */
     private static void displayMainMenu() {
+        System.out.println("Welcome to the Hotel Reservation Application");
         System.out.println("--------------------------------------------------");
         System.out.println("1. Find and reserve a room");
         System.out.println("2. See my reservations");
@@ -69,7 +72,8 @@ public class MainMenu {
                     System.out.println("2. See my reservations");
                     break;
                 case 3:
-                    System.out.println("3. Create an account");
+//                    System.out.println("3. Create an account");
+                    MainMenu.createAccount();
                     break;
                 case 4:
                     System.out.println("4. Admin");
@@ -84,6 +88,53 @@ public class MainMenu {
 
             }
         }
+    }
+
+    private static void createAccount() {
+        String email, firstName, lastName;
+        boolean stopNow = false;
+
+        while (!stopNow) {
+
+            // gather user input to create an account
+            System.out.println("Enter Email format: name@domain.com");
+            email = scanner.next();
+
+            if (email == null) {
+                System.out.println("Email address cannot be null.");
+                continue;
+            }
+
+            System.out.println("Enter first name:");
+            firstName = scanner.next();
+
+            if (firstName == null) {
+                System.out.println("First name cannot be null.");
+                continue;
+            }
+
+            System.out.println("Enter last name:");
+            lastName = scanner.next();
+
+            if (lastName == null) {
+                System.out.println("Last name cannot be null.");
+                continue;
+            }
+
+            // create new account or throw execption
+            try {
+                HotelResource.createACustomer(email, firstName, lastName);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error creating new account.");
+                System.out.println("Invalid email format: " + email);
+                continue;
+            }
+
+            // if here, then the account has been created
+            stopNow = true;
+
+        }
+
     }
 
     // maybe unnecessary, but I'd like to keep the messaging in one place for now.

@@ -13,10 +13,15 @@ import java.util.List;
 From the Create Resource Classes lesson:
 Next you'll need to create the AdminResource class. The AdminResource should have little to no behavior contained
 inside the class and should make use of the Service classes to implement its methods.
-The AdminResource will have the following methods:
+*/
+
+/**
+ * This class provides administrative resources api for the application.
  */
 public class AdminResource {
     // I'm suppose to provide a static reference, but not sure to what just yet
+    // ** double check, but I don't think that the directions indicated what the static reference was suppose to be,
+    //      so i'll have to think about it.
     // private static Collection<>
 
 //    public Customer getCustomer(String email) {

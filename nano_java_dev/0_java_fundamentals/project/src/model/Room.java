@@ -35,4 +35,6 @@ public class Room implements IRoom {
     public String toString() {
         return "Room number: " + roomNumber + ", Price: " + price + ", Room type: " + enumeration;
     }
+
+    // TODO: override equals and hascode
 }
