@@ -36,5 +36,25 @@ public class Room implements IRoom {
         return "Room number: " + roomNumber + ", Price: " + price + ", Room type: " + enumeration;
     }
 
-    // TODO: override equals and hascode
+    @Override
+    public boolean equals(Object object) {
+        if (object == this){
+            return true;
+        } else if (!(object instanceof Room)) {
+            return false;
+        } else {
+            Room room = (Room) object;
+            return room.roomNumber.equalsIgnoreCase(this.roomNumber) &&
+                    room.price == this.price && room.enumeration == this.enumeration;
+        }
+    }
+
+    @Override
+    public int hashCode () {
+        // The recipe for a proper hash code, from Effective Java 3rd ed.
+        int result = roomNumber.hashCode();
+        result += 31 + price.hashCode();
+        result += 31 + enumeration.hashCode();
+        return result;
+    }
 }

@@ -17,5 +17,26 @@ public class Reservation {
                 "Customer [" + customer + "] Room [" + room + "] Checkin [" + checkInDate + "] Checkout [" + checkOutDate + "]";
     }
 
-    // TODO: override equals and hascode
+    @Override
+    public boolean equals(Object object) {
+        if (object == this){
+            return true;
+        } else if (!(object instanceof Reservation)) {
+            return false;
+        } else {
+            Reservation reservation = (Reservation) object;
+            return reservation.customer.equals(this.customer) && reservation.room.equals(this.room) &&
+                    reservation.checkInDate.equals(this.checkInDate) && reservation.checkOutDate.equals(this.checkOutDate);
+        }
+    }
+
+    @Override
+    public int hashCode () {
+        // The recipe for a proper hash code, from Effective Java 3rd ed.
+        int result = customer.hashCode();
+        result += 31 + room.hashCode();
+        result += 31 + checkInDate.hashCode();
+        result += 31 + checkOutDate.hashCode();
+        return result;
+    }
 }
