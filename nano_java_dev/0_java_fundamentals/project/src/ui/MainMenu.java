@@ -1,7 +1,9 @@
 package ui;
 
 import api.HotelResource;
+import exceptions.DuplicateEntryException;
 
+import javax.annotation.processing.SupportedSourceVersion;
 import java.util.Scanner;
 
 /**
@@ -28,8 +30,9 @@ public class MainMenu {
      * The main menu.
      */
     private static void displayMainMenu() {
-        System.out.println("Welcome to the Hotel Reservation Application");
         System.out.println("--------------------------------------------------");
+        System.out.println("          Hotel Reservation Application          ");
+        System.out.println("------------------- MAIN MENU --------------------");
         System.out.println("1. Find and reserve a room");
         System.out.println("2. See my reservations");
         System.out.println("3. Create an account");
@@ -37,10 +40,7 @@ public class MainMenu {
         System.out.println("5. Exit");
         System.out.println("--------------------------------------------------");
         System.out.println("Please select a number for the menu option");
-
     }
-
-    // TODO: incorporate scanner
 
     /**
      * A method to let the user process various actions.
@@ -66,19 +66,23 @@ public class MainMenu {
             // test for valid menu selection number
             switch (optionNumber) {
                 case 1:
+                    // ** NOT IMPLEMENTED **
                     System.out.println("1. Find and reserve a room");
                     break;
                 case 2:
+                    // ** NOT IMPLEMENTED **
                     System.out.println("2. See my reservations");
                     break;
                 case 3:
-//                    System.out.println("3. Create an account");
+                    // implemented
                     MainMenu.createAccount();
                     break;
                 case 4:
-                    System.out.println("4. Admin");
+                    // implemented
+                    AdminMenu.getUserSelection(scanner);
                     break;
                 case 5:
+                    // implemented
                     System.out.println("5. Exit");
                     stopNow = true;
                     break;
@@ -125,8 +129,20 @@ public class MainMenu {
             try {
                 HotelResource.createACustomer(email, firstName, lastName);
             } catch (IllegalArgumentException e) {
+                System.out.println();
+                System.out.println("*****************************");
                 System.out.println("Error creating new account.");
                 System.out.println("Invalid email format: " + email);
+                System.out.println("*****************************");
+                System.out.println();
+                continue;
+            } catch (DuplicateEntryException duplicateEntryException) {
+                System.out.println();
+                System.out.println("*****************************");
+                System.out.println("Error creating new account.");
+                System.out.println("Email address already in use.");
+                System.out.println("*****************************");
+                System.out.println();
                 continue;
             }
 

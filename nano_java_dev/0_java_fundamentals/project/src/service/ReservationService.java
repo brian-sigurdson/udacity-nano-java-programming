@@ -5,8 +5,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
-// TODO: vague description of this class.
-// leave and come back once I have finished the other setup tasks
+/**
+ * A class to provide access to the application's model classes.
+ *
+ * @author Brian Sigurdson
+ */
 public class ReservationService {
     private static Collections reservations;
 

@@ -1,5 +1,6 @@
 package api;
 
+import exceptions.DuplicateEntryException;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
@@ -32,8 +33,10 @@ public class HotelResource {
 //
 //    }
 //
-    public static void createACustomer(String email, String firstName, String lastName) throws IllegalArgumentException {
-        CustomerService.addCustomer(email, firstName, lastName);
+    public static void createACustomer(String email, String firstName, String lastName) throws IllegalArgumentException,
+            DuplicateEntryException {
+
+        CustomerService.getInstance().addCustomer(email, firstName, lastName);
     }
 
 //    public IRoom getRoom(String roomNumber) {
