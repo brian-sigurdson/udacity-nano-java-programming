@@ -1,9 +1,12 @@
 package service;
 
 
+import model.Customer;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * A class to provide access to the application's model classes.
@@ -11,7 +14,26 @@ import java.util.Date;
  * @author Brian Sigurdson
  */
 public class ReservationService {
-    private static Collections reservations;
+
+    // I haven't decided yet on the container for reservation yet.
+    // I need to think about what makes sense and try to keep it simple
+    //    private static Collections reservations;
+    //    private HashMap<String, Customer> theCustomers = new HashMap<>();
+
+    private static ReservationService reservationService = new ReservationService();
+
+    private ReservationService() {
+        // control the ability to create instances
+    }
+
+    /**
+     * A method to return a reference to the only class instance.
+     *
+     * @return the only class instance
+     */
+    public static ReservationService getInstance() {
+        return reservationService;
+    }
 
 //    public void addRoon(IRoom room) {
 //
