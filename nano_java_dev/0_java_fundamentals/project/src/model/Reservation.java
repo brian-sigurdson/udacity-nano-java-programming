@@ -14,7 +14,7 @@ public class Reservation {
     @Override
     public String toString() {
         return "RESERVATION DETAILS: " +
-                "Customer [" + customer + "] Room [" + room + "] Checkin [" + checkInDate + "] Checkout [" + checkOutDate + "]";
+                "Customer: " + customer + "; Room: " + room + "; Checkin " + checkInDate + "; Checkout " + checkOutDate;
     }
 
     @Override

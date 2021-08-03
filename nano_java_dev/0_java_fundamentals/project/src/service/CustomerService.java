@@ -44,8 +44,8 @@ public class CustomerService {
 //    public Customer getCustomer(String customerEmail) {
 //
 //    }
-//
-//    public Collection<Customer> getAllCustomers() {
-//
-//    }
+
+    public Collection<Customer> getAllCustomers() {
+        return theCustomers.values();
+    }
 }

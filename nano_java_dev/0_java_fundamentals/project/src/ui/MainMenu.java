@@ -68,22 +68,19 @@ public class MainMenu {
                 case 1:
                     // ** NOT IMPLEMENTED **
                     System.out.println("1. Find and reserve a room");
+                    // be sure that the user has an account, before trying attempting to create a reservation
                     break;
                 case 2:
                     // ** NOT IMPLEMENTED **
                     System.out.println("2. See my reservations");
                     break;
                 case 3:
-                    // implemented
                     MainMenu.createAccount();
                     break;
                 case 4:
-                    // implemented
                     AdminMenu.getUserSelection(scanner);
                     break;
                 case 5:
-                    // implemented
-                    System.out.println("5. Exit");
                     stopNow = true;
                     break;
                 default:
@@ -148,9 +145,7 @@ public class MainMenu {
 
             // if here, then the account has been created
             stopNow = true;
-
         }
-
     }
 
     // maybe unnecessary, but I'd like to keep the messaging in one place for now.

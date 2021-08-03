@@ -1,10 +1,9 @@
 package api;
 
-//import model.Customer;
-//import model.IRoom;
+import model.Customer;
+import service.CustomerService;
 
 import java.util.Collection;
-import java.util.List;
 
 // TODO: vague description of this class.
 // leave and come back once I have finished the other setup tasks
@@ -36,9 +35,9 @@ public class AdminResource {
 //
 //    }
 //
-//    public Collection<Customer> getAllCustomers() {
-//
-//    }
+    public static Collection<Customer> getAllCustomers() {
+        return CustomerService.getInstance().getAllCustomers();
+    }
 //
 //    public void displayAllReservations() {
 //

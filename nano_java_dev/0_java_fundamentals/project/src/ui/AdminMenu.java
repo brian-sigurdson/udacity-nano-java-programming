@@ -1,5 +1,12 @@
 package ui;
 
+import api.AdminResource;
+import api.HotelResource;
+import exceptions.DuplicateEntryException;
+import model.Customer;
+import service.CustomerService;
+
+import java.util.Collection;
 import java.util.Scanner;
 
 /**
@@ -49,8 +56,7 @@ public class AdminMenu {
             // test for valid menu selection number
             switch (optionNumber) {
                 case 1:
-                    // ** NOT IMPLEMENTED **
-                    System.out.println("1. See all Customers");
+                    AdminMenu.getAllCustomers();
                     break;
                 case 2:
                     // ** NOT IMPLEMENTED **
@@ -65,13 +71,21 @@ public class AdminMenu {
                     System.out.println("4. Add a Room");
                     break;
                 case 5:
-                    // implemented
                     return;
                 default:
                     AdminMenu.invalidInputMessage();
                     break;
 
             }
+        }
+    }
+
+    private static void getAllCustomers() {
+
+        Collection<Customer> customers = AdminResource.getAllCustomers();
+
+        for (Customer customer: customers) {
+            System.out.println(customer);
         }
     }
 

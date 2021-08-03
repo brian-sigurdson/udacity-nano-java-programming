@@ -33,7 +33,7 @@ public class Room implements IRoom {
     // TODO: Double check that this is in line with the example output
     @Override
     public String toString() {
-        return "Room number: " + roomNumber + ", Price: " + price + ", Room type: " + enumeration;
+        return "[Room number: " + roomNumber + ", Price: " + price + ", Room type: " + enumeration + "]";
     }
 
     @Override
