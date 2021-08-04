@@ -53,7 +53,13 @@ public class MainMenu {
 
         while (!stopNow) {
             MainMenu.displayMainMenu();
-            selection = scanner.next();
+
+            // if the scanner is ever null, then fail now
+            if (scanner != null) {
+                selection = scanner.next();
+            } else {
+                throw new NullPointerException("scanner is null");
+            }
 
             // test for valid numeric value
             try {

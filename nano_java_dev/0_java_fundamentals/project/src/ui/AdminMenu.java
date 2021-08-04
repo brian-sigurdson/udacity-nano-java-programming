@@ -36,14 +36,18 @@ public class AdminMenu {
      * A method to let the user process various actions.
      */
     public static void getUserSelection(Scanner scanner){
-
-        boolean stopNow = false;
         String selection = null;
         int optionNumber = -1;
 
-        while (!stopNow) {
+        while (true) {
             AdminMenu.displayAdminMenu();
-            selection = scanner.next();
+
+            // if the scanner is ever null, then fail now
+            if (scanner != null) {
+                selection = scanner.next();
+            } else {
+                throw new NullPointerException("scanner is null");
+            }
 
             // test for valid numeric value
             try {
@@ -81,9 +85,7 @@ public class AdminMenu {
     }
 
     private static void getAllCustomers() {
-
         Collection<Customer> customers = AdminResource.getAllCustomers();
-
         for (Customer customer: customers) {
             System.out.println(customer);
         }
