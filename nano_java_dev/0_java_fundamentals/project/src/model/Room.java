@@ -1,5 +1,7 @@
 package model;
 
+import ui.MainMenu;
+
 /**
  * A class to model a room in the hotel.
  */
@@ -8,6 +10,43 @@ public class Room implements IRoom {
     private String roomNumber;
     protected Double price;
     private RoomType enumeration;
+
+    public Room() {
+
+    }
+
+    public Room(String roomNumber, Double price, Integer roomType) throws IllegalArgumentException {
+
+        // test and set price
+        if (price < 0) {
+            throw new IllegalArgumentException("Room price cannot be a negative value.");
+        } else {
+            this.price = price;
+        }
+
+        // test and set RoomType
+        switch (roomType.intValue()) {
+            case 1:
+                // single room
+                enumeration = RoomType.SINGLE;
+                break;
+            case 2:
+                // double room
+                enumeration = RoomType.DOUBLE;
+                break;
+            default:
+                // technically, we should never get here, but add default for completeness
+                throw new IllegalArgumentException("Invalid room type.");
+        }
+
+        // test and set room number
+        // Although we say it is a number, we'll leave it a string, because often room identifiers could have numeric values
+        if (roomNumber == null) {
+            throw new IllegalArgumentException("Invalid room number.");
+        } else {
+            this.roomNumber = roomNumber;
+        }
+    }
 
     @Override
     public String getRoomNumber() {

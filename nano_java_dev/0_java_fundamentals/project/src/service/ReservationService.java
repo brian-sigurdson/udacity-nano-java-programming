@@ -1,11 +1,12 @@
 package service;
 
 
-import model.Customer;
+import exceptions.DuplicateEntryException;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
+import model.IRoom;
+import model.Reservation;
+import model.Room;
+
 import java.util.HashMap;
 
 /**
@@ -15,10 +16,8 @@ import java.util.HashMap;
  */
 public class ReservationService {
 
-    // I haven't decided yet on the container for reservation yet.
-    // I need to think about what makes sense and try to keep it simple
-    //    private static Collections reservations;
-    //    private HashMap<String, Customer> theCustomers = new HashMap<>();
+    private HashMap<String, IRoom> theRooms = new HashMap<>();
+    private HashMap<String, Reservation> theReservations = new HashMap<>();
 
     private static ReservationService reservationService = new ReservationService();
 
@@ -38,6 +37,15 @@ public class ReservationService {
 //    public void addRoon(IRoom room) {
 //
 //    }
+    public void addRoom(String roomNumber, Double price, Integer roomType) throws IllegalArgumentException,
+            DuplicateEntryException {
+
+        if (theRooms.containsKey(roomNumber)) {
+            throw new DuplicateEntryException("Attempt to add a duplicate room number: " + roomNumber);
+        }
+
+        theRooms.put(roomNumber, new Room(roomNumber, price, roomType ));
+    }
 //
 //    public IRoom getARoom(String roomId) {
 //

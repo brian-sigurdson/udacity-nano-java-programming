@@ -1,7 +1,11 @@
 package api;
 
+import exceptions.DuplicateEntryException;
 import model.Customer;
+import model.Reservation;
+import model.RoomType;
 import service.CustomerService;
+import service.ReservationService;
 
 import java.util.Collection;
 
@@ -27,9 +31,16 @@ public class AdminResource {
 //
 //    }
 //
+    // part of the original method lists give to us.  maybe use it for bulk loading?
 //    public void addRoom(List<IRoom> rooms) {
 //
 //    }
+
+    public static void addRoom(String roomNumber, Double price, Integer roomType) throws IllegalArgumentException,
+            DuplicateEntryException {
+
+        ReservationService.getInstance().addRoom(roomNumber, price, roomType);
+    }
 //
 //    public Collection<IRoom> getAllRooms() {
 //

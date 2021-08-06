@@ -35,7 +35,7 @@ public class CustomerService {
             DuplicateEntryException {
 
         if (theCustomers.containsKey(email)) {
-            throw new DuplicateEntryException();
+            throw new DuplicateEntryException("Attempt to add a duplicate user: " + email);
         }
 
         theCustomers.put(email, new Customer(firstName, lastName, email));

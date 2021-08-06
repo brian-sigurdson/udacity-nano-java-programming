@@ -84,7 +84,7 @@ public class MainMenu {
                     MainMenu.createAccount();
                     break;
                 case 4:
-                    AdminMenu.getUserSelection(scanner);
+                    AdminMenu.getUserSelection();
                     break;
                 case 5:
                     stopNow = true;
@@ -128,7 +128,7 @@ public class MainMenu {
                 continue;
             }
 
-            // create new account or throw execption
+            // create new account or throw exception
             try {
                 HotelResource.createACustomer(email, firstName, lastName);
             } catch (IllegalArgumentException e) {
