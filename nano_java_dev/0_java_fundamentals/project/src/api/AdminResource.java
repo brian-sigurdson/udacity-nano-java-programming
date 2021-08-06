@@ -31,7 +31,12 @@ public class AdminResource {
 //
 //    }
 //
-    // part of the original method lists give to us.  maybe use it for bulk loading?
+    // part of the original method lists give to us.
+    // maybe use it for bulk loading?
+    //
+    // yes.  I saw another student's comment that the only thing they could come up with was to use it with the
+    // load test data on the admin menu.  I'll use it for that as well, since I could envision reading data from a
+    // file and creating objects, which are stored in a list, then passing that list on to create rooms.
 //    public void addRoom(List<IRoom> rooms) {
 //
 //    }

@@ -4,16 +4,12 @@ public class FreeRoom extends Room {
 
     // TODO:  figure out what to do with this class
     /*
-    I know that the intent is to practice inheritance, but doesn't really make sense.
-    You subclass to create something with some specific behavior, but a room being free in this context suggests that
-    it is simply not reserved.
+    Looking on the forum, I found this:  https://knowledge.udacity.com/questions/534314
+    I skimmed it, but I think it corroborates my thought that it doesn't really fit in well.
 
-    This seems clunky and either not thought out or we've not been given enough info.
+    See if there are any other comments that clarify this class as well.
 
-    Check the moderators forum for more info.
-
-    It seems to me that a room's status as free, depends solely on a specific date.
-    It could be reserved today and free tomorrow.
+    Otherwise, I don't think it is really used.
      */
     public FreeRoom() {
         super();
