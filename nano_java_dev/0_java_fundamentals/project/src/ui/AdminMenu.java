@@ -4,6 +4,7 @@ import api.AdminResource;
 import api.HotelResource;
 import exceptions.DuplicateEntryException;
 import model.Customer;
+import model.IRoom;
 import service.CustomerService;
 
 import java.util.Collection;
@@ -62,8 +63,7 @@ public class AdminMenu {
                     AdminMenu.getAllCustomers();
                     break;
                 case 2:
-                    // ** NOT IMPLEMENTED **
-                    System.out.println("2. See all Rooms");
+                    AdminMenu.getAllRooms();
                     break;
                 case 3:
                     // ** NOT IMPLEMENTED **
@@ -79,6 +79,13 @@ public class AdminMenu {
                     break;
 
             }
+        }
+    }
+
+    private static void getAllRooms() {
+        Collection<IRoom> theRooms = AdminResource.getAllRooms();
+        for (IRoom room: theRooms) {
+            System.out.println(room);
         }
     }
 

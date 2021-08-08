@@ -7,7 +7,10 @@ import model.IRoom;
 import model.Reservation;
 import model.Room;
 
+import java.util.Collection;
 import java.util.HashMap;
+
+// TODO:  per rubrick.  need at least one use of public, private, and default methods.
 
 /**
  * A class to provide access to the application's model classes.
@@ -46,6 +49,10 @@ public class ReservationService {
 
         theRooms.put(roomNumber, new Room(roomNumber, price, roomType ));
     }
+
+    public Collection<IRoom> getAllRooms() {
+        return theRooms.values();
+    }
 //
 //    public IRoom getARoom(String roomId) {
 //
@@ -63,5 +70,5 @@ public class ReservationService {
 //
 //    }
 
-    // TODO:  per rubrick.  need at least one use of public, private, and default methods.
+
 }

@@ -2,6 +2,7 @@ package api;
 
 import exceptions.DuplicateEntryException;
 import model.Customer;
+import model.IRoom;
 import model.Reservation;
 import model.RoomType;
 import service.CustomerService;
@@ -46,11 +47,11 @@ public class AdminResource {
 
         ReservationService.getInstance().addRoom(roomNumber, price, roomType);
     }
-//
-//    public Collection<IRoom> getAllRooms() {
-//
-//    }
-//
+
+    public static Collection<IRoom> getAllRooms() {
+        return ReservationService.getInstance().getAllRooms();
+    }
+
     public static Collection<Customer> getAllCustomers() {
         return CustomerService.getInstance().getAllCustomers();
     }
