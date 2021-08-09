@@ -27,6 +27,13 @@ from accounts a
 -- From the web_events table, display
 --      the concatenated value of account_id, '_' , channel, '_', count of web events of the particular channel.
 
-select concat(w1.account_id,'_', w1.channel), count(*) as cnt
-from web_events w1
-group by 1
+-- Corrected after seeing that I didn't have the output correct last try.
+
+with t1 as
+    (
+        select w1.account_id, w1.channel, count(*) as cnt
+        from web_events w1
+        group by 1,2
+    )
+select concat(t1.account_id,'_',t1.channel,'_',t1.cnt)
+from t1;
