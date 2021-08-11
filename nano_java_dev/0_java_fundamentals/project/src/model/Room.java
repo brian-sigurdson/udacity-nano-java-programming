@@ -8,7 +8,7 @@ import ui.MainMenu;
 
 public class Room implements IRoom {
     private String roomNumber;
-    protected Double price;
+    private Double price;
     private RoomType enumeration;
 
     public Room() {

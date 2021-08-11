@@ -19,9 +19,8 @@ public class FreeRoom extends Room {
 
     Otherwise, I don't think it is really used.
      */
-    public FreeRoom() {
-        super();
-        this.price = 0.0;
+    public FreeRoom(String roomNumber, Double price, Integer roomType) {
+        super(roomNumber, 0.0, roomType);
     }
 
     // TODO: Double check that this is in line with the example output
