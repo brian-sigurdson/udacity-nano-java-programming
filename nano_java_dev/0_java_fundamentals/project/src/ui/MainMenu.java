@@ -1,9 +1,11 @@
 package ui;
 
 import api.HotelResource;
+import exceptions.CustomerNotFoundException;
 import exceptions.DuplicateEntryException;
 
 import javax.annotation.processing.SupportedSourceVersion;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -72,9 +74,7 @@ public class MainMenu {
             // test for valid menu selection number
             switch (optionNumber) {
                 case 1:
-                    // ** NOT IMPLEMENTED **
-                    System.out.println("1. Find and reserve a room");
-                    // be sure that the user has an account, before trying attempting to create a reservation
+                    MainMenu.findAndReserveRoom();
                     break;
                 case 2:
                     // ** NOT IMPLEMENTED **
@@ -97,12 +97,44 @@ public class MainMenu {
         }
     }
 
-    private static void createAccount() {
-        String email, firstName, lastName;
-        boolean stopNow = false;
+    private static void findAndReserveRoom() {
+        String userChoice;
 
-        while (!stopNow) {
+        // be sure that the user has an account, before trying attempting to create a reservation
+        while (true) {
+            System.out.println("An account is required to reserve a room.");
+            System.out.println("Do you already have an account with us?  Please enter Y (Yes) or N (No).");
+            userChoice = scanner.next();
 
+            if (userChoice.equalsIgnoreCase("y") || userChoice.equalsIgnoreCase("yes")) {
+                try {
+                    HotelResource.getCustomer(MainMenu.getUserEmail());
+                } catch (CustomerNotFoundException e){
+                    System.out.println();
+                    System.out.println("*****************************");
+                    System.out.println("Error: Email address not found.");
+                    System.out.println("*****************************");
+                    System.out.println();
+                    continue;
+                }
+            } else {
+                // help user create an account
+                MainMenu.createAccount();
+            }
+
+            // find and reserve a room
+
+
+            // if we've made it to here, then you should be done
+            break;
+        }
+
+    }
+
+    private static String getUserEmail() {
+        String email;
+
+        while (true) {
             // gather user input to create an account
             System.out.println("Enter Email format: name@domain.com");
             email = scanner.next();
@@ -110,23 +142,51 @@ public class MainMenu {
             if (email == null) {
                 System.out.println("Email address cannot be null.");
                 continue;
+            } else {
+                return email;
             }
+        }
+    }
 
+    private static String getUserFirstName() {
+        String firstName;
+
+        while (true) {
             System.out.println("Enter first name:");
             firstName = scanner.next();
 
             if (firstName == null) {
                 System.out.println("First name cannot be null.");
                 continue;
+            } else {
+                return firstName;
             }
+        }
+    }
 
+    private static String getUserLastName() {
+        String lastName;
+
+        while (true) {
             System.out.println("Enter last name:");
             lastName = scanner.next();
 
             if (lastName == null) {
                 System.out.println("Last name cannot be null.");
                 continue;
+            } else {
+                return lastName;
             }
+        }
+    }
+
+    private static void createAccount() {
+        String email, firstName, lastName;
+
+        while (true) {
+            email = MainMenu.getUserEmail();
+            firstName = MainMenu.getUserFirstName();
+            lastName = MainMenu.getUserLastName();
 
             // create new account or throw exception
             try {
@@ -148,9 +208,6 @@ public class MainMenu {
                 System.out.println();
                 continue;
             }
-
-            // if here, then the account has been created
-            stopNow = true;
         }
     }
 

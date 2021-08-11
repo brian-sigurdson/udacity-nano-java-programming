@@ -1,5 +1,6 @@
 package api;
 
+import exceptions.CustomerNotFoundException;
 import exceptions.DuplicateEntryException;
 import model.Customer;
 import model.IRoom;
@@ -29,10 +30,10 @@ public class HotelResource {
 //    private static Collection<Reservation> reservations;
 
 
-//    public Customer getCustomer(String email) {
-//
-//    }
-//
+    public static Customer getCustomer(String email) throws CustomerNotFoundException {
+        return CustomerService.getInstance().getCustomer(email);
+    }
+
     public static void createACustomer(String email, String firstName, String lastName) throws IllegalArgumentException,
             DuplicateEntryException {
 

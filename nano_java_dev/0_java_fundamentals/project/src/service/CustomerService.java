@@ -1,5 +1,6 @@
 package service;
 
+import exceptions.CustomerNotFoundException;
 import exceptions.DuplicateEntryException;
 import model.Customer;
 
@@ -41,9 +42,13 @@ public class CustomerService {
         theCustomers.put(email, new Customer(firstName, lastName, email));
     }
 
-//    public Customer getCustomer(String customerEmail) {
-//
-//    }
+    public Customer getCustomer(String customerEmail) throws CustomerNotFoundException {
+        if (theCustomers.containsKey(customerEmail)) {
+            return theCustomers.get(customerEmail);
+        } else {
+            throw new CustomerNotFoundException("Email not found: " + customerEmail);
+        }
+    }
 
     public Collection<Customer> getAllCustomers() {
         return theCustomers.values();

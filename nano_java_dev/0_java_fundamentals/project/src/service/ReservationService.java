@@ -40,6 +40,7 @@ public class ReservationService {
 //    public void addRoon(IRoom room) {
 //
 //    }
+
     public void addRoom(String roomNumber, Double price, Integer roomType) throws IllegalArgumentException,
             DuplicateEntryException {
 
