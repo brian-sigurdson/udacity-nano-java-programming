@@ -3,6 +3,7 @@ package ui;
 import api.HotelResource;
 import exceptions.CustomerNotFoundException;
 import exceptions.DuplicateEntryException;
+import model.Customer;
 
 import javax.annotation.processing.SupportedSourceVersion;
 import java.util.ArrayList;
@@ -99,6 +100,7 @@ public class MainMenu {
 
     private static void findAndReserveRoom() {
         String userChoice;
+        Customer customer;
 
         // be sure that the user has an account, before trying attempting to create a reservation
         while (true) {
@@ -106,23 +108,32 @@ public class MainMenu {
             System.out.println("Do you already have an account with us?  Please enter Y (Yes) or N (No).");
             userChoice = scanner.next();
 
-            if (userChoice.equalsIgnoreCase("y") || userChoice.equalsIgnoreCase("yes")) {
-                try {
-                    HotelResource.getCustomer(MainMenu.getUserEmail());
-                } catch (CustomerNotFoundException e){
-                    System.out.println();
-                    System.out.println("*****************************");
-                    System.out.println("Error: Email address not found.");
-                    System.out.println("*****************************");
-                    System.out.println();
-                    continue;
+            // 1) Get customer or create an account
+            try {
+                if (userChoice.equalsIgnoreCase("y") || userChoice.equalsIgnoreCase("yes")) {
+
+                    System.out.println("Okay.  Let's try to lookup your account.");
+                    customer = HotelResource.getCustomer(MainMenu.getUserEmail());
+
+                } else if (userChoice.equalsIgnoreCase("n") || userChoice.equalsIgnoreCase("no")) {
+
+                    System.out.println("Okay.  Let's create an account.");
+                    String userEmail = MainMenu.createAccount();
+                    customer = HotelResource.getCustomer(userEmail);
+
+                } else {
+                    MainMenu.invalidInputMessage();
                 }
-            } else {
-                // help user create an account
-                MainMenu.createAccount();
+            } catch (CustomerNotFoundException e){
+                System.out.println();
+                System.out.println("*******************************");
+                System.out.println("Error: Email address not found.");
+                System.out.println("*******************************");
+                System.out.println();
+                continue;
             }
 
-            // find and reserve a room
+            // 2) find and reserve a room
 
 
             // if we've made it to here, then you should be done
@@ -180,7 +191,7 @@ public class MainMenu {
         }
     }
 
-    private static void createAccount() {
+    private static String createAccount() {
         String email, firstName, lastName;
 
         while (true) {
@@ -208,7 +219,11 @@ public class MainMenu {
                 System.out.println();
                 continue;
             }
+
+            // if we are here, then break
+            break;
         }
+        return email;
     }
 
     // maybe unnecessary, but I'd like to keep the messaging in one place for now.
