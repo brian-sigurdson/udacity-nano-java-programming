@@ -18,12 +18,29 @@ public class Reservation {
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
-
-    // TODO: Double check that this is in line with the example output
     @Override
     public String toString() {
-        return "RESERVATION DETAILS: " +
-                "Customer: " + customer + "; Room: " + room + "; Checkin " + checkInDate + "; Checkout " + checkOutDate;
+        String reservationHeader = "RESERVATION DETAILS:";
+        String customerInfo = "Customer: " + customer.getFirstName() + " " + customer.getLastName();
+        String customerEmail = "Customer email: " + customer.getEmail();
+        String roomInfo = "Room: " + room.getRoomNumber() + " - " + room.getRoomType();
+        String roomPrice = "Price: " + room.getRoomPrice();
+        String checkIn = "Checkin " + checkInDate;
+        String checkOut = "Checkout " + checkOutDate;
+
+        return reservationHeader +
+                "\n" +
+                customerInfo +
+                "\n" +
+                customerEmail +
+                "\n" +
+                roomInfo +
+                "\n" +
+                roomPrice +
+                "\n" +
+                checkIn +
+                "\n" +
+                checkOut;
     }
 
     @Override

@@ -6,7 +6,9 @@ import exceptions.DuplicateEntryException;
 import model.Customer;
 
 import javax.annotation.processing.SupportedSourceVersion;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -101,29 +103,38 @@ public class MainMenu {
     private static void findAndReserveRoom() {
         String userChoice;
         Customer customer;
+        String checkInDate;
+        String checkOutDate;
+        DateTimeFormatter formatter;
 
         // be sure that the user has an account, before trying attempting to create a reservation
         while (true) {
             System.out.println("An account is required to reserve a room.");
-            System.out.println("Do you already have an account with us?  Please enter Y (Yes) or N (No).");
-            userChoice = scanner.next();
+            System.out.println("Do you already have an account with us?  Please enter Y (Yes), N (No), E (Exit).");
+            userChoice = scanner.next().toLowerCase();
 
             // 1) Get customer or create an account
             try {
-                if (userChoice.equalsIgnoreCase("y") || userChoice.equalsIgnoreCase("yes")) {
-
-                    System.out.println("Okay.  Let's try to lookup your account.");
-                    customer = HotelResource.getCustomer(MainMenu.getUserEmail());
-
-                } else if (userChoice.equalsIgnoreCase("n") || userChoice.equalsIgnoreCase("no")) {
-
-                    System.out.println("Okay.  Let's create an account.");
-                    String userEmail = MainMenu.createAccount();
-                    customer = HotelResource.getCustomer(userEmail);
-
-                } else {
-                    MainMenu.invalidInputMessage();
+                switch (userChoice) {
+                    case "y":
+                    case "yes":
+                        System.out.println("Okay.  Let's try to lookup your account.");
+                        customer = HotelResource.getCustomer(MainMenu.getUserEmail());
+                        break;
+                    case "n":
+                    case "no":
+                        System.out.println("Okay.  Let's create an account.");
+                        String userEmail = MainMenu.createAccount();
+                        customer = HotelResource.getCustomer(userEmail);
+                        break;
+                    case "e":
+                    case "exit":
+                            return;
+                    default:
+                        MainMenu.invalidInputMessage();
+                        break;
                 }
+                
             } catch (CustomerNotFoundException e){
                 System.out.println();
                 System.out.println("*******************************");
@@ -134,7 +145,17 @@ public class MainMenu {
             }
 
             // 2) find and reserve a room
+            // gather input
+            formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+            System.out.println("Enter check-in date: yyyy-mm-dd example 2021-8-13 or 2021-08-13");
+            checkInDate = scanner.next();
 
+
+            System.out.println("Enter check-in date: yyyy-mm-dd example 2021-8-15 or 2021-08-15");
+            checkInDate = scanner.next();
+
+            System.out.println("Would you like to reserve a room?  y/n");
+            System.out.println("Select a room number to reserve a room");
 
             // if we've made it to here, then you should be done
             break;
