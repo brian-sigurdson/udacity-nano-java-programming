@@ -99,7 +99,7 @@ limit 5
 -- select sum(q1) as sum_quartile_1, sum(q2) as sum_quartile_2, sum(q3) as sum_quartile_3, sum(q4) as sum_quartile_4
 -- from quartile_sums_2016
 
--- *** I believe this is what is requested.
+-- *** I believe that this is the requested query.
 with quartile_sums_2016 as
     (
         select
@@ -120,5 +120,14 @@ where year = 2016 and percent_forest > 75.00
 
 
 -- e. How many countries had a percent forestation higher than the United States in 2016?
--- NOTE:  This should be a good question for a self-join query.
-
+-- 94
+-- NOTE:  This is a self-join query.
+select count(*)
+from forestation a
+join forestation b on a.year = b.year and a.country_code = b.country_code
+where a.year = 2016 and a.percent_forest >
+                        (
+                            select percent_forest
+                            from forestation
+                            where year = 2016 and country_code = 'USA'
+                        )
