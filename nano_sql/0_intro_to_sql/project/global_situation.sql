@@ -54,7 +54,9 @@ from sqkm_1990
 join sqkm_2016 on sqkm_1990.country_code = sqkm_2016.country_code
 
 -- e. If you compare the amount of forest area lost between 1990 and 2016, to which country's total area in 2016 is it closest to?
--- I manually looked this up. It is Australia.
+-- I manually looked this up using the following query.  I didn't think that we were suppose to be able to implement
+-- this type of logic in a sql query.
+-- It is Australia.
 select country_name, forest_area_sqkm
 from forestation
 where year = 2016 and country_code = 'AUS'
