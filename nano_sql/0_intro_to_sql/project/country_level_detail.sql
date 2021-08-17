@@ -1,4 +1,4 @@
--- These queries are associated with the questions presented in the COUNTRY-LEVEL DETAIL section.
+-- These queries are associated WITH the questions presented in the COUNTRY-LEVEL DETAIL section.
 
 -- The first paragraph of part 3 of the document, COUNTRY-LEVEL DETAIL, states information about success stories,
 -- but were not included in the preparation questions below, so I'm creating it now.
@@ -6,7 +6,7 @@
 -- success stories
 -- Which country increased forest area FROM 1990 to 2016?
 -- What was the percentage change?
--- Which is the country with the next largest increase in forest area FROM 1990 to 2016?
+-- Which is the country WITH the next largest increase in forest area FROM 1990 to 2016?
 -- What was the percentage change?
 WITH sqkm_1990 AS
     (
@@ -27,7 +27,7 @@ FROM sqkm_1990
 JOIN sqkm_2016 ON sqkm_1990.country_name = sqkm_2016.country_name
 WHERE (forest_area_sqkm_2016 - forest_area_sqkm_1990) is not null
 ORDER BY percent_change desc
-limit 2
+LIMIT 2
 
 -- a. Which 5 countries saw the largest amount decrease in forest area FROM 1990 to 2016?
 -- What was the difference in forest area for each?
@@ -47,7 +47,7 @@ SELECT sqkm_1990.country_name, ROUND((forest_area_sqkm_2016 - forest_area_sqkm_1
 FROM sqkm_1990
 JOIN sqkm_2016 ON sqkm_1990.country_name = sqkm_2016.country_name
 ORDER BY sqkm_change
-limit 5
+LIMIT 5
 
 -- b. Which 5 countries saw the largest percent decrease in forest area FROM 1990 to 2016?
 -- What was the percent change to 2 decimal places for each?
@@ -71,21 +71,21 @@ JOIN sqkm_2016 ON sqkm_1990.country_name = sqkm_2016.country_name
 WHERE (forest_area_sqkm_2016 - forest_area_sqkm_1990) is not null
 -- ORDER BY sqkm_change
 ORDER BY percent_change
-limit 5
+LIMIT 5
 
 -- c. If countries were grouped BY percent forestation in quartiles, which GROUP had the most countries in it in 2016?
 -- NOTE:  Per the grading rubric, we need to implement a case statement for this solution.
 WITH quartile_sums_2016 AS
     (
         SELECT
-            case when percent_forest <= 25.00 then 1 else 0 end AS q1,
-            case when percent_forest < 25.00 AND percent_forest <= 50.00 then 1 else 0 end AS q2,
-            case when percent_forest < 50.00 AND percent_forest <= 75.00 then 1 else 0 end AS q3,
-            case when percent_forest < 75.00 AND percent_forest <= 100.00 then 1 else 0 end AS q4
+            SUM( case when percent_forest <= 25.00 then 1 else 0 end) AS q1,
+            SUM( case when percent_forest > 25.00 AND percent_forest <= 50.00 then 1 else 0 end) AS q2,
+            SUM( case when percent_forest > 50.00 AND percent_forest <= 75.00 then 1 else 0 end) AS q3,
+            SUM( case when percent_forest > 75.00 then 1 else 0 end) AS q4
         FROM forestation
-        WHERE year = 2016
+        WHERE year = 2016 AND country_code != 'WLD'
     )
-SELECT SUM(q1) AS sum_quartile_1, SUM(q2) AS sum_quartile_2, SUM(q3) AS sum_quartile_3, SUM(q4) AS sum_quartile_4
+SELECT q1 AS sum_quartile_1, q2 AS sum_quartile_2, q3 AS sum_quartile_3, q4 AS sum_quartile_4
 FROM quartile_sums_2016
 
 -- d. List all of the countries that were in the 4th quartile (percent forest > 75%) in 2016.
