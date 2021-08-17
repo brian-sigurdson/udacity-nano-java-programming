@@ -1,4 +1,4 @@
--- These queries are associated with the questions presented in the REGIONAL OUTLOOK section.
+-- This query is associated with the questions presented in the REGIONAL OUTLOOK section.
 
 -- Create a table that shows the Regions AND their percent forest area
 --      (sum of forest area divided BY SUM of land area) in 1990 and 2016. (Note that 1 sq mi = 2.59 sq km).
