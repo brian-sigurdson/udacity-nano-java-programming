@@ -1,35 +1,35 @@
 -- These queries are associated with the RECOMMENDATIONS section.
 
--- Income group: count, forest area, land area, percent forest
-with tbl_1990 as
+-- Income Group: count, forest area, land area, percent forest
+WITH tbl_1990 AS
     (
-        select income_group,
-            count(*) as count,
-            round(sum(forest_area_sqkm)::numeric,2) as ttl_forest_area,
-            round(sum(total_area_sqkm)::numeric,2) as ttl_land_area,
-            round((sum(forest_area_sqkm) / sum(total_area_sqkm))::numeric * 100, 2) as pct_forest
-        from forestation
-        where year = 1990 and country_code != 'WLD'
-        group by 1
+        SELECT income_group,
+            COUNT(*) AS COUNT,
+            ROUND(SUM(forest_area_sqkm)::NUMERIC,2) AS ttl_forest_area,
+            ROUND(SUM(total_area_sqkm)::NUMERIC,2) AS ttl_land_area,
+            ROUND((SUM(forest_area_sqkm) / SUM(total_area_sqkm))::NUMERIC * 100, 2) AS pct_forest
+        FROM forestation
+        WHERE year = 1990 AND country_code != 'WLD'
+        GROUP BY 1
     ),
-  tbl_2016 as
+  tbl_2016 AS
       (
-          select income_group,
-                 count(*) as count,
-                 round(sum(forest_area_sqkm)::numeric,2) as ttl_forest_area,
-                 round(sum(total_area_sqkm)::numeric,2) as ttl_land_area,
-                 round((sum(forest_area_sqkm) / sum(total_area_sqkm))::numeric * 100, 2) as pct_forest
-          from forestation
-          where year = 2016
-            and country_code != 'WLD'
-          group by 1
+          SELECT income_group,
+                 COUNT(*) AS COUNT,
+                 ROUND(SUM(forest_area_sqkm)::NUMERIC,2) AS ttl_forest_area,
+                 ROUND(SUM(total_area_sqkm)::NUMERIC,2) AS ttl_land_area,
+                 ROUND((SUM(forest_area_sqkm) / SUM(total_area_sqkm))::NUMERIC * 100, 2) AS pct_forest
+          FROM forestation
+          WHERE year = 2016
+            AND country_code != 'WLD'
+          GROUP BY 1
       )
-select tbl_1990.income_group, tbl_2016.count,
-       tbl_1990.ttl_forest_area as ttl_forest_area_1990,
-       tbl_2016.ttl_forest_area as ttl_forest_area_2016,
-       tbl_2016.ttl_forest_area - tbl_1990.ttl_forest_area as ttl_forest_area_change,
-       tbl_1990.pct_forest as pct_forest_1990,
-       tbl_2016.pct_forest as pct_forest_2016,
-       tbl_2016.pct_forest - tbl_1990.pct_forest as pct_change
-from tbl_1990
-join tbl_2016 on tbl_1990.income_group = tbl_2016.income_group
+SELECT tbl_1990.income_group, tbl_2016.COUNT,
+       tbl_1990.ttl_forest_area AS ttl_forest_area_1990,
+       tbl_2016.ttl_forest_area AS ttl_forest_area_2016,
+       tbl_2016.ttl_forest_area - tbl_1990.ttl_forest_area AS ttl_forest_area_change,
+       tbl_1990.pct_forest AS pct_forest_1990,
+       tbl_2016.pct_forest AS pct_forest_2016,
+       tbl_2016.pct_forest - tbl_1990.pct_forest AS pct_change
+FROM tbl_1990
+JOIN tbl_2016 ON tbl_1990.income_group = tbl_2016.income_group
