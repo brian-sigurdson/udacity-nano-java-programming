@@ -78,15 +78,19 @@ LIMIT 5
 WITH quartile_sums_2016 AS
     (
         SELECT
-            SUM( case when percent_forest <= 25.00 then 1 else 0 end) AS q1,
-            SUM( case when percent_forest > 25.00 AND percent_forest <= 50.00 then 1 else 0 end) AS q2,
-            SUM( case when percent_forest > 50.00 AND percent_forest <= 75.00 then 1 else 0 end) AS q3,
-            SUM( case when percent_forest > 75.00 then 1 else 0 end) AS q4
+            case
+                when percent_forest <= 25.00 then 'Q1'
+                when percent_forest > 25.00 AND percent_forest <= 50.00 then 'Q2'
+                when percent_forest > 50.00 AND percent_forest <= 75.00 then 'Q3'
+                when percent_forest > 75.00 then 'Q4'
+            END AS quartile
         FROM forestation
-        WHERE year = 2016 AND country_code != 'WLD'
+        WHERE year = 2016 AND country_code != 'WLD' AND percent_forest IS NOT NULL
     )
-SELECT q1 AS sum_quartile_1, q2 AS sum_quartile_2, q3 AS sum_quartile_3, q4 AS sum_quartile_4
+SELECT quartile, count(*) as quartile_count
 FROM quartile_sums_2016
+group by 1
+order by 1
 
 -- d. List all of the countries that were in the 4th quartile (percent forest > 75%) in 2016.
 SELECT country_name
