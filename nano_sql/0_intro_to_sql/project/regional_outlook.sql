@@ -28,7 +28,7 @@ SELECT sqkm_1990.region,
        percentage_forest_area_2016,
        percentage_forest_area_2016 - percentage_forest_area_1990 AS percentage_forest_area_change
 FROM sqkm_1990
-JOIN sqkm_2016 ON sqkm_1990.region = sqkm_2016.region
+INNER JOIN sqkm_2016 ON sqkm_1990.region = sqkm_2016.region
 -- ORDER BY sqkm_forest_area_change
 ORDER BY percentage_forest_area_1990
 

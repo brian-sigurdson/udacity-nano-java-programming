@@ -30,7 +30,7 @@ SELECT sqkm_1990.country_code,
        forest_area_sqkm_2016,
        forest_area_sqkm_2016 - forest_area_sqkm_1990 AS sqkm_change
 FROM sqkm_1990
-JOIN sqkm_2016 ON sqkm_1990.country_code = sqkm_2016.country_code
+INNER JOIN sqkm_2016 ON sqkm_1990.country_code = sqkm_2016.country_code;
 
 -- d. What was the percent change in forest area of the world between 1990 AND 2016?
 WITH sqkm_1990 AS
@@ -51,7 +51,7 @@ SELECT sqkm_1990.country_code,
        forest_area_sqkm_2016 - forest_area_sqkm_1990 AS sqkm_change,
        ROUND((((forest_area_sqkm_2016 - forest_area_sqkm_1990) / forest_area_sqkm_1990)::NUMERIC * 100),2) AS percentage_change
 FROM sqkm_1990
-JOIN sqkm_2016 ON sqkm_1990.country_code = sqkm_2016.country_code
+INNER JOIN sqkm_2016 ON sqkm_1990.country_code = sqkm_2016.country_code;
 
 -- e. If you compare the amount of forest area lost between 1990 AND 2016, to which country's total area in 2016 is it closest to?
 -- Find the first country whose land area is more than the forest area lost between 1990 AND 2016, when the land areas
@@ -79,7 +79,7 @@ WHERE year = 2016 AND country_code != 'WLD' AND total_area_sqkm <
                                             )
                                    SELECT forest_area_sqkm_2016 - forest_area_sqkm_1990 AS sqkm_change
                                    FROM sqkm_1990
-                                       JOIN sqkm_2016 ON sqkm_1990.country_code = sqkm_2016.country_code
+                                       INNER JOIN sqkm_2016 ON sqkm_1990.country_code = sqkm_2016.country_code
                                ) AS sub
                       )
 ORDER BY total_area_sqkm desc
