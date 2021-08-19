@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Reservation {
     private Customer customer;
@@ -17,6 +18,7 @@ public class Reservation {
 //    private Date checkOutDate;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
 
     @Override
     public String toString() {
@@ -51,16 +53,18 @@ public class Reservation {
             return false;
         } else {
             Reservation reservation = (Reservation) object;
-            return reservation.customer.equals(this.customer) && reservation.room.equals(this.room) &&
-                    reservation.checkInDate.equals(this.checkInDate) && reservation.checkOutDate.equals(this.checkOutDate);
+
+            // reservations are equal, if they're for the same room, for the same checkIn data, and same checkOut date
+            return reservation.room.equals(this.room) &&
+                    reservation.checkInDate.equals(this.checkInDate) &&
+                    reservation.checkOutDate.equals(this.checkOutDate);
         }
     }
 
     @Override
     public int hashCode () {
         // The recipe for a proper hash code, from Effective Java 3rd ed.
-        int result = customer.hashCode();
-        result += 31 + room.hashCode();
+        int result = room.hashCode();
         result += 31 + checkInDate.hashCode();
         result += 31 + checkOutDate.hashCode();
         return result;

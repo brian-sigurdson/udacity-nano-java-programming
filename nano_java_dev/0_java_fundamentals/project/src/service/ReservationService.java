@@ -7,8 +7,7 @@ import model.IRoom;
 import model.Reservation;
 import model.Room;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 // TODO:  per rubrick.  need at least one use of public, private, and default methods.
 
@@ -19,8 +18,9 @@ import java.util.HashMap;
  */
 public class ReservationService {
 
-    private HashMap<String, IRoom> theRooms = new HashMap<>();
-    private HashMap<String, Reservation> theReservations = new HashMap<>();
+    private Map<String, IRoom> theRooms = new HashMap<>();
+//    private HashMap<String, Reservation> theReservations = new HashMap<>();
+    private Set<Reservation> theReservations = new HashSet<>();
 
     private static ReservationService reservationService = new ReservationService();
 
@@ -70,6 +70,12 @@ public class ReservationService {
 //    public Collection<Reservation> getCustomerReservation(Customer customer) {
 //
 //    }
+
+    // an unnecessary method to satisfy the unnecessary requirement of having a method with default access.
+    void sayHello() {
+        System.out.println("Hello from the ReservationService.sayHello() method.");
+
+    }
 
 
 }

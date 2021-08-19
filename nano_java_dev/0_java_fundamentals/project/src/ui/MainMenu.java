@@ -6,10 +6,12 @@ import exceptions.DuplicateEntryException;
 import model.Customer;
 
 import javax.annotation.processing.SupportedSourceVersion;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * A class to provide a main menu and gather user input.
@@ -20,7 +22,7 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     /**
      * Entry point to the application.
@@ -105,7 +107,6 @@ public class MainMenu {
         Customer customer;
         String checkInDate;
         String checkOutDate;
-        DateTimeFormatter formatter;
 
         // be sure that the user has an account, before trying attempting to create a reservation
         while (true) {
@@ -146,7 +147,6 @@ public class MainMenu {
 
             // 2) find and reserve a room
             // gather input
-            formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
             System.out.println("Enter check-in date: yyyy-mm-dd example 2021-8-13 or 2021-08-13");
             checkInDate = scanner.next();
 
@@ -159,6 +159,17 @@ public class MainMenu {
 
             // if we've made it to here, then you should be done
             break;
+        }
+    }
+
+    private static LocalDate getReservationDate() {
+        String datePattern = "^(.+)(.+).$";
+        Pattern pattern = Pattern.compile(datePattern);
+
+        String dateToVerify = scanner.next();
+
+        if (!pattern.matcher(dateToVerify).matches()) {
+//            throw new IllegalArgumentException();
         }
 
     }
