@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(25) UNIQUE CHECK ( LENGTH("username") > 0 ),
-    last_login DATE,
+    last_login DATE DEFAULT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
