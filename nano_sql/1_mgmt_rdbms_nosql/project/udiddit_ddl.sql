@@ -25,7 +25,7 @@ CREATE INDEX users_username_idx ON users (username);
 CREATE TABLE topics (
     id SERIAL PRIMARY KEY,
     name VARCHAR(30) UNIQUE CHECK ( LENGTH("name") > 0 ),
-    description VARCHAR(500),
+    description VARCHAR(500) DEFAULT NULL,
     -- following similar instructions for other tables, for what to do when a user is deleted.
     user_id INTEGER REFERENCES users (id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT NOW()
