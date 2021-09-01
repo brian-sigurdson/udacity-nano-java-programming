@@ -2,7 +2,7 @@
 
 -------------------------------------------------------------------------------------------------------
 -- populate users table
-TRUNCATE TABLE users CASCADE;
+-- TRUNCATE TABLE users CASCADE;
 
 -- from bad_comments.username
 INSERT INTO users (username)
@@ -24,13 +24,17 @@ WHERE NOT EXISTS( SELECT username FROM users );
 
 -- from bad_posts.downvotes
 INSERT INTO users (username)
-select distinct trim(splitted_names)
-from bad_posts bp, regexp_split_to_table(bp.downvotes ,',') splitted_names
+SELECT DISTINCT trim(splitted_names)
+FROM bad_posts bp, regexp_split_to_table(bp.downvotes ,',') splitted_names
 WHERE NOT EXISTS( SELECT username FROM users );
 
 -------------------------------------------------------------------------------------------------------
 -- populate topics table
-
+-- TRUNCATE TABLE users CASCADE;
+INSERT INTO topics (name, user_id)
+SELECT DISTINCT bp.topic, u.id
+FROM bad_posts bp
+JOIN users u ON bp.username = u.username;
 
 -------------------------------------------------------------------------------------------------------
 -- populate posts table
