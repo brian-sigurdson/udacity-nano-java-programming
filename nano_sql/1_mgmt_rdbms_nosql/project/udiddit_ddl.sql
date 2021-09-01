@@ -26,8 +26,10 @@ CREATE TABLE topics (
     id SERIAL PRIMARY KEY,
     name VARCHAR(30) UNIQUE CHECK ( LENGTH("name") > 0 ),
     description VARCHAR(500) DEFAULT NULL,
-    -- following similar instructions for other tables, for what to do when a user is deleted.
-    user_id INTEGER REFERENCES users (id) ON DELETE SET NULL,
+    -- Allow DEFAULT NULL so that we can load data from bad_posts,
+    -- because there are multiple users associated with topic name
+    -- See the ALTER TABLE statement, following the DML code in udiddit_migration.sql file, to remove DEFAULT NULL.
+    user_id INTEGER REFERENCES users (id) ON DELETE SET NULL DEFAULT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
