@@ -3,38 +3,44 @@
 -------------------------------------------------------------------------------------------------------
 -- populate users table
 -- TRUNCATE TABLE users CASCADE;
-
--- from bad_comments.username
+-- get usernames from bad_comments.username
 INSERT INTO users (username)
-SELECT DISTINCT trim(username)
-FROM bad_comments
-WHERE NOT EXISTS( SELECT username FROM users );
+SELECT DISTINCT trim(bc.username)
+FROM bad_comments bc
+LEFT OUTER JOIN users u ON trim(u.username) = trim(bc.username)
+WHERE trim(u.username) IS NULL;
 
--- from bad_posts.username
+-- get usernames from bad_posts.username
 INSERT INTO users (username)
-SELECT DISTINCT trim(username)
-FROM bad_posts
-WHERE NOT EXISTS( SELECT username FROM users );
+SELECT DISTINCT trim(bp.username)
+FROM bad_posts bp
+LEFT OUTER JOIN users u ON trim(u.username) = trim(bp.username)
+WHERE trim(u.username) IS NULL;
 
--- from bad_posts.upvotes
+-- get usernames from bad_posts.upvotes
 INSERT INTO users (username)
-SELECT DISTINCT trim(splitted_names)
-FROM bad_posts bp, regexp_split_to_table(bp.upvotes ,',') splitted_names
-WHERE NOT EXISTS( SELECT username FROM users );
+SELECT DISTINCT trim(regexp_split_to_table(bp.upvotes ,','))
+FROM bad_posts bp
+LEFT OUTER JOIN users u ON trim(u.username) = trim(bp.username)
+WHERE trim(u.username) IS NULL;
 
--- from bad_posts.downvotes
+-- get usernames from bad_posts.downvotes
 INSERT INTO users (username)
-SELECT DISTINCT trim(splitted_names)
-FROM bad_posts bp, regexp_split_to_table(bp.downvotes ,',') splitted_names
-WHERE NOT EXISTS( SELECT username FROM users );
+SELECT DISTINCT trim(regexp_split_to_table(bp.downvotes ,','))
+FROM bad_posts bp
+LEFT OUTER JOIN users u ON trim(u.username) = trim(bp.username)
+WHERE trim(u.username) IS NULL;
 
 -------------------------------------------------------------------------------------------------------
 -- populate topics table
--- TRUNCATE TABLE users CASCADE;
-INSERT INTO topics (name, user_id)
-SELECT DISTINCT bp.topic, u.id
+-- TRUNCATE TABLE topics CASCADE;
+INSERT INTO topics (name)
+SELECT DISTINCT trim(bp.topic)
 FROM bad_posts bp
-JOIN users u ON bp.username = u.username;
+JOIN users u ON trim(bp.username) = trim(u.username);
+
+-- to remove the DEFAULT NULL setting from the column, to ensure that future entries require a valid user id
+ALTER TABLE topics ALTER COLUMN user_id DROP DEFAULT;
 
 -------------------------------------------------------------------------------------------------------
 -- populate posts table
