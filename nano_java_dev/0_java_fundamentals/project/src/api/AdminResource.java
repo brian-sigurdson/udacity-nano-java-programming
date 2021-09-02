@@ -42,7 +42,7 @@ public class AdminResource {
 //
 //    }
 
-    public static void addRoom(String roomNumber, Double price, Integer roomType) throws IllegalArgumentException,
+    public static void addRoom(Integer roomNumber, Double price, Integer roomType) throws IllegalArgumentException,
             DuplicateEntryException {
 
         ReservationService.getInstance().addRoom(roomNumber, price, roomType);

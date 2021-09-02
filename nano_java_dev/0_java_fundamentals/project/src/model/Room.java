@@ -2,21 +2,23 @@ package model;
 
 import ui.MainMenu;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A class to model a room in the hotel.
  */
 
 public class Room implements IRoom {
-    private String roomNumber;
+    private Integer roomNumber;
     private Double price;
     private RoomType enumeration;
+    private List<Reservation> myReservations = new ArrayList<>();
 
-    public Room() {
+    public Room() {    }
 
-    }
-
-    public Room(String roomNumber, Double price, Integer roomType) throws IllegalArgumentException {
-
+    public Room(Integer roomNumber, Double price, Integer roomType) throws IllegalArgumentException {
         // test and set price
         if (price < 0) {
             throw new IllegalArgumentException("Room price cannot be a negative value.");
@@ -48,8 +50,55 @@ public class Room implements IRoom {
         }
     }
 
+    public void addReservation(Reservation reservation) {
+        myReservations.add(reservation);
+    }
+
+    public boolean isAvailable(LocalDate checkInDate, LocalDate checkOutDate) {
+        // iterate over this room's reservations and determine if the room is available for the given dates.
+        for (Reservation reservation : myReservations) {
+            LocalDate reservationCheckIn = reservation.getCheckInDate();
+            LocalDate reservationCheckOut = reservation.getCheckOutDate();
+
+            if (checkInDate.isAfter(reservationCheckOut) || checkOutDate.isBefore(reservationCheckIn)) {
+                continue;
+            }
+
+            if (
+                    checkInDate.equals(reservationCheckIn) ||
+                    checkInDate.equals(reservationCheckOut) ||
+                    checkOutDate.equals(reservationCheckIn) ||
+                    checkOutDate.equals(reservationCheckOut)
+            ) {
+                // there is a scheduling conflict
+                return false;
+            }
+
+            if (
+                    checkInDate.isBefore(reservationCheckIn) &&
+                    checkOutDate.isAfter(reservationCheckIn) &&
+                    checkOutDate.isBefore(reservationCheckOut)
+            ) {
+                // there is a scheduling conflict
+                return false;
+            }
+
+            if (
+                    checkInDate.isAfter(reservationCheckIn) &&
+                    checkInDate.isBefore(reservationCheckOut) &&
+                    checkOutDate.isAfter(reservationCheckOut)
+            ) {
+                // there is a scheduling conflict
+                return false;
+            }
+        }
+
+        // if you made it to here, then there should not be any scheduling conflict
+        return true;
+    }
+
     @Override
-    public String getRoomNumber() {
+    public Integer getRoomNumber() {
         return roomNumber;
     }
 
@@ -77,13 +126,19 @@ public class Room implements IRoom {
 
     @Override
     public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+
         if (object == this){
             return true;
-        } else if (!(object instanceof Room)) {
+        }
+
+        if (!(object instanceof Room)) {
             return false;
         } else {
             Room room = (Room) object;
-            return room.roomNumber.equalsIgnoreCase(this.roomNumber) &&
+            return room.roomNumber.equals(this.roomNumber) &&
                     room.price == this.price && room.enumeration == this.enumeration;
         }
     }

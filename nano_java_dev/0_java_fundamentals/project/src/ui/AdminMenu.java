@@ -107,7 +107,7 @@ public class AdminMenu {
     }
 
     private static void createRoom() {
-        String roomNumber;
+        Integer roomNumber;
         Double price;
         Integer roomType;
         boolean stopNow = false;
@@ -209,13 +209,18 @@ public class AdminMenu {
         }
     }
 
-    private static String getRoomNumber() {
-        String roomNumber;
+    private static Integer getRoomNumber() {
+        Integer roomNumber;
 
         while (true) {
             // gather user input to create a room
-            System.out.println("Enter room number");
-            roomNumber = scanner.next();
+            System.out.println("Enter a numeric room number:  (eg. 100, 101, ...)");
+            try {
+                roomNumber = Integer.parseInt(scanner.next());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number format.");
+                continue;
+            }
 
             if (roomNumber == null) {
                 System.out.println("Room number cannot be null.");

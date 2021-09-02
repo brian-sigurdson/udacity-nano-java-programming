@@ -16,7 +16,6 @@ import java.util.HashMap;
  */
 public class CustomerService {
     private HashMap<String, Customer> theCustomers = new HashMap<>();
-
     private static CustomerService customerService = new CustomerService();
 
     private CustomerService() {

@@ -7,6 +7,7 @@ import model.IRoom;
 import model.Reservation;
 import model.Room;
 
+import java.time.LocalDate;
 import java.util.*;
 
 // TODO:  per rubrick.  need at least one use of public, private, and default methods.
@@ -18,11 +19,10 @@ import java.util.*;
  */
 public class ReservationService {
 
-    private Map<String, IRoom> theRooms = new HashMap<>();
-//    private HashMap<String, Reservation> theReservations = new HashMap<>();
+    private Map<Integer, IRoom> theRooms = new HashMap<>();
     private Set<Reservation> theReservations = new HashSet<>();
-
     private static ReservationService reservationService = new ReservationService();
+
 
     private ReservationService() {
         // control the ability to create instances
@@ -37,11 +37,7 @@ public class ReservationService {
         return reservationService;
     }
 
-//    public void addRoon(IRoom room) {
-//
-//    }
-
-    public void addRoom(String roomNumber, Double price, Integer roomType) throws IllegalArgumentException,
+    public void addRoom(Integer roomNumber, Double price, Integer roomType) throws IllegalArgumentException,
             DuplicateEntryException {
 
         if (theRooms.containsKey(roomNumber)) {
@@ -62,11 +58,23 @@ public class ReservationService {
 //    public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
 //
 //    }
-//
-//    public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
-//
-//    }
-//
+
+    public Collection<IRoom> findRooms(LocalDate checkInDate, LocalDate checkOutDate) {
+        // a list of available rooms
+        Collection<IRoom> availableRooms = new ArrayList<>();
+
+        // for each room
+        for (IRoom room : theRooms.values()) {
+            // give it the checkIn and checkOut dates and let it tell you if it is available
+            if (room.isAvailable(checkInDate, checkOutDate)) {
+                availableRooms.add(room);
+            }
+        }
+
+        // return a list of available rooms
+        return availableRooms;
+    }
+
 //    public Collection<Reservation> getCustomerReservation(Customer customer) {
 //
 //    }

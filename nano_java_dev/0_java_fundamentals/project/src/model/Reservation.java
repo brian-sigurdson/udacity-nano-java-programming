@@ -6,19 +6,23 @@ import java.time.format.DateTimeFormatter;
 public class Reservation {
     private Customer customer;
     private IRoom room;
-
-    /*
-    I know you can probably convert a Date object to milliseconds from time zero, but Date objects are basically depricated.
-    Use java.time.* classes, which is preferred as of Java 8.
-    This page has a good example of some convenience methods associated with java.time.* that will make implementing
-    searches easier:  https://howtodoinjava.com/java/date-time/compare-localdates/
-    Also, : https://www.google.com/search?q=java+compare+java.time.localdate&oq=java+compare+java.time.localdate&aqs=chrome..69i57j33i22i29i30.46394j0j7&sourceid=chrome&ie=UTF-8
-     */
-//    private Date checkInDate;
-//    private Date checkOutDate;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+
+    public Reservation(Customer customer, IRoom room, LocalDate checkInDate, LocalDate checkOutDate) {
+        this.customer = customer;
+        this.room = room;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+    }
+
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
 
     @Override
     public String toString() {
