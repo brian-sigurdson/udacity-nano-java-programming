@@ -1,3 +1,5 @@
+-- file: udiddit_ddl.sql
+
 -- GUIDELINE #4
 -- Your new database schema will be composed of five (5) tables that should have an auto-incrementing id as their primary key.
 
@@ -8,6 +10,7 @@ DROP TABLE IF EXISTS comments CASCADE;
 DROP TABLE IF EXISTS posts CASCADE;
 DROP TABLE IF EXISTS topics CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
+
 -------------------------------------------------------------------------------------------------------
 -- users
 CREATE TABLE users (

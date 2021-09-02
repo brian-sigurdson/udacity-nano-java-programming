@@ -1,3 +1,5 @@
+-- file: udiddit_migration.sql
+
 -- the following code will migrate the data from the old tables into the new tables
 
 -------------------------------------------------------------------------------------------------------
@@ -68,7 +70,6 @@ WITH upvoter_names AS
          (
             SELECT bp1.id AS post_id, left(trim(regexp_split_to_table(bp1.upvotes, ',')), 25) AS username
             FROM bad_posts bp1
---             JOIN users u ON left(trim(bp1.username), 25) = u.username
          )
 SELECT 1 AS vote, uvn.post_id AS post_id, u.id AS user_id
 FROM users u
@@ -76,12 +77,11 @@ JOIN upvoter_names uvn ON uvn.username = u.username;
 
 -- downvotes
 INSERT INTO votes (vote, post_id, user_id)
-WITH upvoter_names AS
+WITH downvoter_names AS
          (
             SELECT bp1.id AS post_id, left(trim(regexp_split_to_table(bp1.downvotes, ',')), 25) AS username
             FROM bad_posts bp1
---             JOIN users u ON left(trim(bp1.username), 25) = u.username
          )
-SELECT -1 AS vote, uvn.post_id AS post_id, u.id AS user_id
+SELECT -1 AS vote, dvn.post_id AS post_id, u.id AS user_id
 FROM users u
-JOIN upvoter_names uvn ON uvn.username = u.username;
+JOIN downvoter_names dvn ON dvn.username = u.username;
