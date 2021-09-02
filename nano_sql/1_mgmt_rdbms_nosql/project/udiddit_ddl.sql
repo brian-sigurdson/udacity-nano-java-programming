@@ -26,10 +26,7 @@ CREATE TABLE topics (
     id SERIAL PRIMARY KEY,
     name VARCHAR(30) UNIQUE CHECK ( LENGTH("name") > 0 ),
     description VARCHAR(500) DEFAULT NULL,
-    -- Allow DEFAULT NULL so that we can load data from bad_posts,
-    -- because there are multiple users associated with topic name
-    -- See the ALTER TABLE statement, following the DML code in udiddit_migration.sql file, to remove DEFAULT NULL.
-    user_id INTEGER REFERENCES users (id) ON DELETE SET NULL DEFAULT NULL,
+    -- According to this comment https://knowledge.udacity.com/questions/340724 a user_id is not required.
     created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -39,20 +36,18 @@ CREATE INDEX topics_topic_name_idx ON topics (name);
 -- posts
 CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(100) UNIQUE CHECK ( LENGTH("title") > 0 ),
+    title VARCHAR(100) CHECK ( LENGTH("title") > 0 ),
     url VARCHAR(4000) DEFAULT NULL,
     text_content TEXT DEFAULT NULL,
     topic_id INTEGER REFERENCES topics (id) ON DELETE CASCADE,
     user_id INTEGER REFERENCES users (id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT NOW(),
-    -- Posts should contain either a URL or a text content, but not both.
+    -- "Posts should contain either a URL or a text content, but not both."
     CONSTRAINT posts_url_text_content_check CHECK (
-        -- url or text_content can be non-null
-        LENGTH("url") > 0 OR LENGTH("text_content") > 0
-        -- url and text_content cannot both be non-null
-        AND NOT ( LENGTH("url") > 0 AND LENGTH("text_content") > 0)
         -- url and text_content cannot both be null
-        AND NOT ( url IS NULL AND text_content IS NULL)
+        NOT ( url IS NULL AND text_content IS NULL) AND
+        -- url and text_content cannot both be non-null
+        NOT ( LENGTH("url") > 0 AND LENGTH("text_content") > 0)
     )
 );
 
@@ -67,7 +62,7 @@ CREATE INDEX posts_user_id_created_at_idx ON posts (user_id, created_at);
 -- comments
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
-    comment_text VARCHAR(100) UNIQUE CHECK ( LENGTH("comment_text") > 0 ),
+    comment_text VARCHAR(100) CHECK ( LENGTH("comment_text") > 0 ),
     post_id INTEGER REFERENCES posts (id) ON DELETE CASCADE,
     user_id INTEGER REFERENCES users (id) ON DELETE SET NULL,
     parent_comment_id INTEGER REFERENCES comments (id) ON DELETE CASCADE DEFAULT NULL,
