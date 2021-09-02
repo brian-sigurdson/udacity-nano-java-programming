@@ -1,3 +1,4 @@
+-- GitHub:  https://github.com/brian-sigurdson/udacity-courses/tree/main/nano_sql/1_mgmt_rdbms_nosql/project
 -- file: udiddit_ddl.sql
 
 -- GUIDELINE #4
@@ -5,86 +6,86 @@
 
 -------------------------------------------------------------------------------------------------------
 -- drop the tables, if exist
-DROP TABLE IF EXISTS votes CASCADE;
-DROP TABLE IF EXISTS comments CASCADE;
-DROP TABLE IF EXISTS posts CASCADE;
-DROP TABLE IF EXISTS topics CASCADE;
-DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS udiddit_votes CASCADE;
+DROP TABLE IF EXISTS udiddit_comments CASCADE;
+DROP TABLE IF EXISTS udiddit_posts CASCADE;
+DROP TABLE IF EXISTS udiddit_topics CASCADE;
+DROP TABLE IF EXISTS udiddit_users CASCADE;
 
 -------------------------------------------------------------------------------------------------------
 -- users
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(25) UNIQUE CHECK ( LENGTH("username") > 0 ),
-    last_login DATE DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
+CREATE TABLE udiddit_users (
+    user_id SERIAL PRIMARY KEY,
+    user_name VARCHAR(25) UNIQUE CHECK ( LENGTH("user_name") > 0 ),
+    user_last_login DATE DEFAULT NULL,
+    user_created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX users_last_login_date_idx ON users (last_login);
-CREATE INDEX users_username_idx ON users (username);
+CREATE INDEX users_last_login_date_idx ON udiddit_users (user_last_login);
+CREATE INDEX users_username_idx ON udiddit_users (user_name);
 
 -------------------------------------------------------------------------------------------------------
 -- topics
-CREATE TABLE topics (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(30) UNIQUE CHECK ( LENGTH("name") > 0 ),
-    description VARCHAR(500) DEFAULT NULL,
+CREATE TABLE udiddit_topics (
+    topic_id SERIAL PRIMARY KEY,
+    topic_name VARCHAR(30) UNIQUE CHECK ( LENGTH("topic_name") > 0 ),
+    topic_description VARCHAR(500) DEFAULT NULL,
     -- According to this comment https://knowledge.udacity.com/questions/340724 a user_id is not required.
-    created_at TIMESTAMP DEFAULT NOW()
+    topic_created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX topics_topic_name_idx ON topics (name);
+CREATE INDEX topics_topic_name_idx ON udiddit_topics (topic_name);
 
 -------------------------------------------------------------------------------------------------------
 -- posts
-CREATE TABLE posts (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(100) CHECK ( LENGTH("title") > 0 ),
-    url VARCHAR(4000) DEFAULT NULL,
-    text_content TEXT DEFAULT NULL,
-    topic_id INTEGER REFERENCES topics (id) ON DELETE CASCADE,
-    user_id INTEGER REFERENCES users (id) ON DELETE SET NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
-    -- "Posts should contain either a URL or a text content, but not both."
-    CONSTRAINT posts_url_text_content_check CHECK (
-        -- url and text_content cannot both be null
-        NOT ( url IS NULL AND text_content IS NULL) AND
-        -- url and text_content cannot both be non-null
-        NOT ( LENGTH("url") > 0 AND LENGTH("text_content") > 0)
+CREATE TABLE udiddit_posts (
+    post_id SERIAL PRIMARY KEY,
+    post_title VARCHAR(100) CHECK ( LENGTH("post_title") > 0 ),
+    post_url VARCHAR(4000) DEFAULT NULL,
+    post_content TEXT DEFAULT NULL,
+    post_topic_id INTEGER REFERENCES udiddit_topics (topic_id) ON DELETE CASCADE,
+    post_user_id INTEGER REFERENCES udiddit_users (user_id) ON DELETE SET NULL,
+    post_created_at TIMESTAMP DEFAULT NOW(),
+    -- "Posts should contain either a URL or a text post_content, but not both."
+    CONSTRAINT posts_url_post_content_check CHECK (
+        -- url and post_content cannot both be null
+        NOT ( post_url IS NULL AND post_content IS NULL) AND
+        -- url and post_content cannot both be non-null
+        NOT ( LENGTH("post_url") > 0 AND LENGTH("post_content") > 0)
     )
 );
 
-CREATE INDEX posts_title_idx ON posts (title);
-CREATE INDEX posts_user_id_idx ON posts (user_id);
-CREATE INDEX posts_topic_id_idx ON posts (topic_id);
-CREATE INDEX posts_url_idx ON posts (url);
-CREATE INDEX posts_post_id_created_at_idx ON posts (id, created_at);
-CREATE INDEX posts_user_id_created_at_idx ON posts (user_id, created_at);
+CREATE INDEX posts_title_idx ON udiddit_posts (post_title);
+CREATE INDEX posts_user_id_idx ON udiddit_posts (post_id);
+CREATE INDEX posts_topic_id_idx ON udiddit_posts (post_topic_id);
+CREATE INDEX posts_url_idx ON udiddit_posts (post_url);
+CREATE INDEX posts_post_id_created_at_idx ON udiddit_posts (post_id, post_created_at);
+CREATE INDEX posts_user_id_created_at_idx ON udiddit_posts (post_user_id, post_created_at);
 
 -------------------------------------------------------------------------------------------------------
 -- comments
-CREATE TABLE comments (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE udiddit_comments (
+    comment_id SERIAL PRIMARY KEY,
     comment_text VARCHAR(100) CHECK ( LENGTH("comment_text") > 0 ),
-    post_id INTEGER REFERENCES posts (id) ON DELETE CASCADE,
-    user_id INTEGER REFERENCES users (id) ON DELETE SET NULL,
-    parent_comment_id INTEGER REFERENCES comments (id) ON DELETE CASCADE DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
+    comment_post_id INTEGER REFERENCES udiddit_posts (post_id) ON DELETE CASCADE,
+    comment_user_id INTEGER REFERENCES udiddit_users (user_id) ON DELETE SET NULL,
+    parent_comment_id INTEGER REFERENCES udiddit_comments (comment_id) ON DELETE CASCADE DEFAULT NULL,
+    comment_created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX comments_comment_text_idx ON comments (comment_text);
-CREATE INDEX comments_parent_comment_id_idx ON comments (parent_comment_id);
-CREATE INDEX comments_user_id_created_at_idx ON comments (user_id, created_at);
+CREATE INDEX comments_comment_text_idx ON udiddit_comments (comment_text);
+CREATE INDEX comments_parent_comment_id_idx ON udiddit_comments (parent_comment_id);
+CREATE INDEX comments_user_id_created_at_idx ON udiddit_comments (comment_user_id, comment_created_at);
 
 -------------------------------------------------------------------------------------------------------
 -- votes
-CREATE TABLE votes (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE udiddit_votes (
+    votes_id SERIAL PRIMARY KEY,
     -- only -1 and 1 are acceptable values
-    vote SMALLINT CHECK ( vote IN (-1, 1) ),
-    post_id INTEGER REFERENCES posts (id) ON DELETE CASCADE,
-    user_id INTEGER REFERENCES users (id) ON DELETE SET NULL,
-    CONSTRAINT votes_post_id_user_id_key UNIQUE (post_id, user_id),
-    created_at TIMESTAMP DEFAULT NOW()
+    votes_vote SMALLINT CHECK ( votes_vote IN (-1, 1) ),
+    votes_post_id INTEGER REFERENCES udiddit_posts (post_id) ON DELETE CASCADE,
+    votes_user_id INTEGER REFERENCES udiddit_users (user_id) ON DELETE SET NULL,
+    CONSTRAINT votes_post_id_user_id_key UNIQUE (votes_post_id, votes_user_id),
+    votes_created_at TIMESTAMP DEFAULT NOW()
 );
 
