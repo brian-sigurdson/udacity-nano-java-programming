@@ -19,6 +19,10 @@ public class Reservation {
         this.room.addReservation(this);
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
     public LocalDate getCheckInDate() {
         return checkInDate;
     }

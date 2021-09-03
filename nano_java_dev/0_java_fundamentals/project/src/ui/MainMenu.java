@@ -1,6 +1,7 @@
 package ui;
 
 import api.HotelResource;
+import exceptions.CustomerChoseExitException;
 import exceptions.CustomerNotFoundException;
 import exceptions.DuplicateEntryException;
 import exceptions.RoomNotFoundException;
@@ -12,10 +13,7 @@ import service.ReservationService;
 import javax.annotation.processing.SupportedSourceVersion;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -87,8 +85,7 @@ public class MainMenu {
                     MainMenu.findAndReserveRoom();
                     break;
                 case 2:
-                    // ** NOT IMPLEMENTED **
-                    System.out.println("2. See my reservations");
+                    MainMenu.displayReservationsForCustomer();
                     break;
                 case 3:
                     MainMenu.createAccount();
@@ -107,96 +104,193 @@ public class MainMenu {
         }
     }
 
+    private static void displayReservationsForCustomer()  {
+        Customer customer;
+        Collection<Reservation> reservations;
+
+        try {
+            customer = MainMenu.getUserAccount();
+            reservations = ReservationService.getInstance().getCustomerReservations(customer);
+        } catch (CustomerNotFoundException e) {
+            System.out.println();
+            System.out.println("*******************************");
+            System.out.println("Error: Email address not found.");
+            System.out.println("*******************************");
+            System.out.println();
+            return;
+        }
+
+        for (Reservation reservation: reservations) {
+            System.out.println(reservation);
+        }
+    }
+
     private static void findAndReserveRoom() {
         LocalDate checkInDate;
         LocalDate checkOutDate;
+        String userEmail;
         Customer customer;
         Reservation reservation;
-        Integer roomNumber;
+        int roomNumber;
 
-            // 1) find and reserve a room
-            // gather input
-            while (true) {
-                try {
-                    System.out.println("Enter check-in date: yyyy-mm-dd example 2021-08-13");
-                    checkInDate = MainMenu.getReservationDate(scanner.next());
-                    break;
-                } catch (IllegalArgumentException e) {
-                    System.out.println("The value you entered is not in a valid format.");
-                    continue;
-                }
+        // get the checkin and checkout dates or user chooses to exit
+        try {
+            // use a static nested class to avoid passing values in lists based on index position.
+            CheckInAndCheckOutDates theDates = new CheckInAndCheckOutDates();
+            // get the desired dates from the customer
+            theDates.getCheckInAndCheckOutDatesFromCustomer();
+            checkInDate = theDates.getCheckInDate();
+            checkOutDate = theDates.getCheckOutDate();
+        } catch (CustomerChoseExitException e) {
+            return;
+        }
+
+        // present rooms available to user
+        System.out.println("The following rooms meet your requested check-in and check-out dates.");
+        MainMenu.viewAvailableRoomsForDates(checkInDate, checkOutDate);
+
+        // do they want to reserve a room?
+        outer: while (true) {
+            System.out.println("Would you like to reserve a room?  Y (Yes), N (No)");
+            switch (scanner.next().toLowerCase()) {
+                case "y":
+                case "yes":
+                    while (true) {
+                        System.out.println("An account is required to reserve a room.");
+                        System.out.println("Do you already have an account with us?  Please enter Y (Yes), N (No), E (Exit)");
+                        switch (scanner.next().toLowerCase()) {
+                            case "y":
+                            case "yes":
+                                try {
+                                    customer = MainMenu.getUserAccount();
+                                } catch (CustomerNotFoundException e) {
+                                    System.out.println();
+                                    System.out.println("*******************************");
+                                    System.out.println("Error: Email address not found.");
+                                    System.out.println("*******************************");
+                                    System.out.println();
+                                    return;
+                                }
+                                break outer;
+                            case "n":
+                            case "no":
+                                userEmail = MainMenu.createAccount();
+                                try {
+                                    customer = MainMenu.getUserAccount(userEmail);
+                                } catch (CustomerNotFoundException e) {
+                                    System.out.println();
+                                    System.out.println("*******************************");
+                                    System.out.println("Error: Email address not found.");
+                                    System.out.println("*******************************");
+                                    System.out.println();
+                                    return;
+                                }
+                                break outer;
+                            case "e":
+                            case "exit":
+                                return;
+                            default:
+                                MainMenu.invalidInputMessage();
+                        }
+                    }
+                case "n":
+                case "no":
+                    return;
+                default:
+                    MainMenu.invalidInputMessage();
             }
+        }
 
-            while (true) {
-                try {
-                    System.out.println("Enter check-out date: yyyy-mm-dd example 2021-08-20");
-                    checkOutDate = MainMenu.getReservationDate(scanner.next());
-                    break;
-                } catch (IllegalArgumentException e) {
-                    System.out.println("The value you entered is not in a valid format.");
-                    continue;
+        while (true) {
+            try {
+                // now select a room
+                roomNumber = MainMenu.selectARoomToReserve(checkInDate, checkOutDate);
+                if (!MainMenu.isValidRoomNumber(roomNumber)) {
+                    throw new RoomNotFoundException();
                 }
-            }
 
-            if (checkInDate.equals(checkOutDate) || checkInDate.isAfter(checkOutDate)) {
-                System.out.println("The check-in date must be on a date that precedes the check-out date.");
-                System.out.println("Please start again from the Main Menu.");
+                // now reserve a room
+                reservation = MainMenu.reserveRoom(customer, roomNumber, checkInDate, checkOutDate);
+
+                // now print reservation
+                System.out.println(reservation);
+            } catch (CustomerChoseExitException e) {
                 return;
+            } catch (RoomNotFoundException e) {
+                System.out.println("The room number you have entered is not found in the system.");
+                System.out.println("Please try again.");
             }
-
-            // present rooms available here
-            MainMenu.viewAvailableRoomsForDates(checkInDate, checkOutDate);
-
-            outer: while (true) {
-                // do they want to reserve a room?
-                System.out.println("Would you like to reserve a room?  y/yes, n/no.");
-                switch (scanner.next().toLowerCase()) {
-                    case "y":
-                    case "yes":
-                        customer = MainMenu.getUserAccount();
-
-                        inner: while (true) {
-                            System.out.println("Select a room number to reserve a room:");
-                            try {
-                                roomNumber = Integer.parseInt(scanner.next());
-                                break inner;
-                            } catch (NumberFormatException e) {
-                                System.out.println("The room number is not a numeric value. Please try again.");
-                                continue inner;
-                            }
-                        }
-
-                        try {
-                            reservation = MainMenu.reserveRoom(customer, roomNumber, checkInDate, checkOutDate);
-                            // print reservation
-                            System.out.println(reservation);
-                            // done
-                            break outer;
-                        } catch (RoomNotFoundException e) {
-                            System.out.println("The room number you have entered is not found in the system.");
-                            System.out.println("Please try again.");
-                            continue;
-                        }
-                    case "n":
-                    case "no":
-                        return;
-                    default:
-                        MainMenu.invalidInputMessage();
-                        break;
-                }
-            }
+        }
     }
 
-//    private static boolean isValidRoomNumber(Integer roomNumber) {
-//        return ReservationService.getInstance().isValidRoomNumber(roomNumber);
-//    }
-
-    private static Reservation reserveRoom(Customer customer, Integer roomNumber, LocalDate checkInDate,
-                                           LocalDate checkOutDate) throws RoomNotFoundException {
-        return ReservationService.getInstance().reserveRoom(customer, roomNumber, checkInDate, checkOutDate);
+    private static boolean isValidRoomNumber(int roomNumber) {
+        return ReservationService.getInstance().isValidRoomNumber(roomNumber);
     }
 
-    private static Customer getUserAccount() {
+    private static String createAccount() {
+        String email, firstName, lastName;
+
+        while (true) {
+            email = MainMenu.getUserEmail();
+            firstName = MainMenu.getUserFirstName();
+            lastName = MainMenu.getUserLastName();
+
+            // create new account or throw exception
+            try {
+                HotelResource.createACustomer(email, firstName, lastName);
+            } catch (IllegalArgumentException e) {
+                System.out.println();
+                System.out.println("*****************************");
+                System.out.println("Error creating new account.");
+                System.out.println("Invalid email format: " + email);
+                System.out.println("*****************************");
+                System.out.println();
+                continue;
+            } catch (DuplicateEntryException duplicateEntryException) {
+                System.out.println();
+                System.out.println("*****************************");
+                System.out.println("Error creating new account.");
+                System.out.println("Email address already in use.");
+                System.out.println("*****************************");
+                System.out.println();
+                continue;
+            }
+
+            // if we are here, then break
+            break;
+        }
+        return email;
+    }
+
+    private static Customer getUserAccount() throws CustomerNotFoundException {
+        try {
+            return HotelResource.getCustomer(MainMenu.getUserEmail());
+        } catch (CustomerNotFoundException e){
+            System.out.println();
+            System.out.println("*******************************");
+            System.out.println("Error: Email address not found.");
+            System.out.println("*******************************");
+            System.out.println();
+
+            throw e;
+        }
+    }
+
+    private static Customer getUserAccount(String userEmail)  throws CustomerNotFoundException {
+        try {
+            return HotelResource.getCustomer(userEmail);
+        } catch (CustomerNotFoundException e){
+            System.out.println();
+            System.out.println("*******************************");
+            System.out.println("Error: Email address not found.");
+            System.out.println("*******************************");
+            System.out.println();
+
+            throw e;
+        }
+    }
+
+    private static Customer getUserAccount_old() {
         // be sure that the user has an account, before trying attempting to create a reservation
         while (true) {
             System.out.println("An account is required to reserve a room.");
@@ -262,15 +356,31 @@ public class MainMenu {
         }
     }
 
-    private static LocalDate getReservationDate(String dateToVerify) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String datePattern = "^(\\d{4})-(\\d{2})-(\\d{2})$";
-        Pattern pattern = Pattern.compile(datePattern);
+    private static Reservation reserveRoom(Customer customer, Integer roomNumber, LocalDate checkInDate,
+                                           LocalDate checkOutDate) throws RoomNotFoundException {
+        return ReservationService.getInstance().reserveRoom(customer, roomNumber, checkInDate, checkOutDate);
+    }
 
-        if (pattern.matcher(dateToVerify).matches()) {
-            return LocalDate.parse(dateToVerify, dateTimeFormatter);
-        } else {
-            throw new IllegalArgumentException();
+    private static int selectARoomToReserve(LocalDate checkInDate, LocalDate checkOutDate)
+            throws CustomerChoseExitException {
+        String userInput;
+
+        while (true) {
+            System.out.println("Enter a room number to reserve a room, or E (Exit):");
+            // present rooms available to user
+            MainMenu.viewAvailableRoomsForDates(checkInDate, checkOutDate);
+
+            try {
+                userInput = scanner.nextLine().toLowerCase();
+
+                if (userInput.equalsIgnoreCase("e") || userInput.equalsIgnoreCase("exit")) {
+                    throw new CustomerChoseExitException();
+                } else {
+                    return Integer.parseInt(userInput);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("The room number is not a numeric value. Please try again.");
+            }
         }
     }
 
@@ -323,43 +433,95 @@ public class MainMenu {
         }
     }
 
-    private static String createAccount() {
-        String email, firstName, lastName;
+    private static LocalDate verifyReservationDateFormat(String dateToVerify) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String datePattern = "^(\\d{4})-(\\d{2})-(\\d{2})$";
+        Pattern pattern = Pattern.compile(datePattern);
+
+        if (pattern.matcher(dateToVerify).matches()) {
+            return LocalDate.parse(dateToVerify, dateTimeFormatter);
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private static LocalDate getCheckInDate() throws CustomerChoseExitException {
+        String userInput;
 
         while (true) {
-            email = MainMenu.getUserEmail();
-            firstName = MainMenu.getUserFirstName();
-            lastName = MainMenu.getUserLastName();
-
-            // create new account or throw exception
             try {
-                HotelResource.createACustomer(email, firstName, lastName);
+                System.out.println("Enter check-in date: yyyy-mm-dd example 2021-08-13, or E (exit)");
+                userInput = scanner.next().toLowerCase();
+                if (userInput.equalsIgnoreCase("e") || userInput.equalsIgnoreCase("exit")) {
+                    throw new CustomerChoseExitException("Customer chose to exit getCheckInDate().");
+                } else {
+                    return MainMenu.verifyReservationDateFormat(userInput);
+                }
             } catch (IllegalArgumentException e) {
-                System.out.println();
-                System.out.println("*****************************");
-                System.out.println("Error creating new account.");
-                System.out.println("Invalid email format: " + email);
-                System.out.println("*****************************");
-                System.out.println();
-                continue;
-            } catch (DuplicateEntryException duplicateEntryException) {
-                System.out.println();
-                System.out.println("*****************************");
-                System.out.println("Error creating new account.");
-                System.out.println("Email address already in use.");
-                System.out.println("*****************************");
-                System.out.println();
-                continue;
+                System.out.println("The value you entered is not in a valid format.");
             }
-
-            // if we are here, then break
-            break;
         }
-        return email;
+    }
+
+    private static LocalDate getCheckOutDate() throws CustomerChoseExitException {
+        String userInput;
+
+        while (true) {
+            try {
+                System.out.println("Enter check-out date: yyyy-mm-dd example 2021-08-20, or E (exit)");
+                userInput = scanner.next().toLowerCase();
+                if (userInput.equalsIgnoreCase("e") || userInput.equalsIgnoreCase("exit")) {
+                    throw new CustomerChoseExitException("Customer chose to exit getCheckInDate().");
+                } else {
+                    return MainMenu.verifyReservationDateFormat(userInput);
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("The value you entered is not in a valid format.");
+            }
+        }
     }
 
     // maybe unnecessary, but I'd like to keep the messaging in one place for now.
     private static void invalidInputMessage() {
         System.out.println("Warning: Invalid input.");
+    }
+
+    // a private class to facilitate getting the check-in and check-out dates from customers
+    private static class CheckInAndCheckOutDates {
+        LocalDate checkInDate;
+        LocalDate checkOutDate;
+
+        public LocalDate getCheckInDate() {
+            return checkInDate;
+        }
+
+        public LocalDate getCheckOutDate() {
+            return checkOutDate;
+        }
+
+        public void getCheckInAndCheckOutDatesFromCustomer() throws CustomerChoseExitException{
+            while (true) {
+                // get check-in date
+                try {
+                    checkInDate = MainMenu.getCheckInDate();
+                } catch (CustomerChoseExitException e) {
+                    throw e;
+                }
+
+                // get check-out date
+                try {
+                    checkOutDate = MainMenu.getCheckOutDate();
+                } catch (CustomerChoseExitException e) {
+                    throw e;
+                }
+
+                // test dates for validity
+                if (checkInDate.equals(checkOutDate) || checkInDate.isAfter(checkOutDate)) {
+                    System.out.println("The check-in date must be on a date that precedes the check-out date.");
+                } else {
+                    break;
+                }
+            }
+        }
     }
 }

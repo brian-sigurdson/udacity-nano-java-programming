@@ -94,9 +94,17 @@ public class ReservationService {
         return theReservations;
     }
 
-//    public Collection<Reservation> getCustomerReservation(Customer customer) {
-//
-//    }
+    public Collection<Reservation> getCustomerReservations(Customer customer) {
+        Collection<Reservation> customerReservations = new ArrayList<>();
+
+        for (Reservation reservation: theReservations) {
+            if (customer.equals(reservation.getCustomer())) {
+                customerReservations.add(reservation);
+            }
+        }
+
+        return customerReservations;
+    }
 
     // an unnecessary method to satisfy the requirement of having a method with default access.
     void sayHello() {
