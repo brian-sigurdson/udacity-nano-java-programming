@@ -22,7 +22,6 @@ CREATE TABLE udiddit_users (
 );
 
 CREATE INDEX users_last_login_date_idx ON udiddit_users (user_last_login);
-CREATE INDEX users_username_idx ON udiddit_users (user_name);
 
 -------------------------------------------------------------------------------------------------------
 -- topics
@@ -34,8 +33,6 @@ CREATE TABLE udiddit_topics (
     topic_created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX topics_topic_name_idx ON udiddit_topics (topic_name);
-
 -------------------------------------------------------------------------------------------------------
 -- posts
 CREATE TABLE udiddit_posts (
@@ -43,22 +40,22 @@ CREATE TABLE udiddit_posts (
     post_title VARCHAR(100) CHECK ( LENGTH("post_title") > 0 ),
     post_url VARCHAR(4000) DEFAULT NULL,
     post_content TEXT DEFAULT NULL,
-    post_topic_id INTEGER REFERENCES udiddit_topics (topic_id) ON DELETE CASCADE,
+    post_topic_id INTEGER REFERENCES udiddit_topics (topic_id) ON DELETE CASCADE NOT NULL,
     post_user_id INTEGER REFERENCES udiddit_users (user_id) ON DELETE SET NULL,
     post_created_at TIMESTAMP DEFAULT NOW(),
     -- "Posts should contain either a URL or a text post_content, but not both."
     CONSTRAINT posts_url_post_content_check CHECK (
         -- url and post_content cannot both be null
-        NOT ( post_url IS NULL AND post_content IS NULL) AND
+        NOT (post_url IS NULL AND post_content IS NULL) AND
         -- url and post_content cannot both be non-null
-        NOT ( LENGTH("post_url") > 0 AND LENGTH("post_content") > 0)
+        NOT (LENGTH("post_url") > 0 AND LENGTH("post_content") > 0)
     )
 );
 
 CREATE INDEX posts_title_idx ON udiddit_posts (post_title);
-CREATE INDEX posts_user_id_idx ON udiddit_posts (post_id);
-CREATE INDEX posts_topic_id_idx ON udiddit_posts (post_topic_id);
 CREATE INDEX posts_url_idx ON udiddit_posts (post_url);
+CREATE INDEX posts_topic_id_idx ON udiddit_posts (post_topic_id);
+CREATE INDEX posts_user_id_idx ON udiddit_posts (post_user_id);
 CREATE INDEX posts_post_id_created_at_idx ON udiddit_posts (post_id, post_created_at);
 CREATE INDEX posts_user_id_created_at_idx ON udiddit_posts (post_user_id, post_created_at);
 
@@ -67,7 +64,7 @@ CREATE INDEX posts_user_id_created_at_idx ON udiddit_posts (post_user_id, post_c
 CREATE TABLE udiddit_comments (
     comment_id SERIAL PRIMARY KEY,
     comment_text VARCHAR(100) CHECK ( LENGTH("comment_text") > 0 ),
-    comment_post_id INTEGER REFERENCES udiddit_posts (post_id) ON DELETE CASCADE,
+    comment_post_id INTEGER REFERENCES udiddit_posts (post_id) ON DELETE CASCADE NOT NULL,
     comment_user_id INTEGER REFERENCES udiddit_users (user_id) ON DELETE SET NULL,
     parent_comment_id INTEGER REFERENCES udiddit_comments (comment_id) ON DELETE CASCADE DEFAULT NULL,
     comment_created_at TIMESTAMP DEFAULT NOW()
@@ -83,7 +80,7 @@ CREATE TABLE udiddit_votes (
     votes_id SERIAL PRIMARY KEY,
     -- only -1 and 1 are acceptable values
     votes_vote SMALLINT CHECK ( votes_vote IN (-1, 1) ),
-    votes_post_id INTEGER REFERENCES udiddit_posts (post_id) ON DELETE CASCADE,
+    votes_post_id INTEGER REFERENCES udiddit_posts (post_id) ON DELETE CASCADE NOT NULL,
     votes_user_id INTEGER REFERENCES udiddit_users (user_id) ON DELETE SET NULL,
     CONSTRAINT votes_post_id_user_id_key UNIQUE (votes_post_id, votes_user_id),
     votes_created_at TIMESTAMP DEFAULT NOW()
