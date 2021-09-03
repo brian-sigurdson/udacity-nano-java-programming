@@ -3,6 +3,8 @@ package service;
 
 import exceptions.DuplicateEntryException;
 
+import exceptions.RoomNotFoundException;
+import model.Customer;
 import model.IRoom;
 import model.Reservation;
 import model.Room;
@@ -50,14 +52,27 @@ public class ReservationService {
     public Collection<IRoom> getAllRooms() {
         return theRooms.values();
     }
-//
-//    public IRoom getARoom(String roomId) {
-//
-//    }
-//
-//    public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
-//
-//    }
+
+    private IRoom getARoom(Integer roomNumber) throws RoomNotFoundException{
+        if (isValidRoomNumber(roomNumber)) {
+            return theRooms.get(roomNumber);
+        } else {
+            throw new RoomNotFoundException();
+        }
+    }
+
+    public Reservation reserveRoom(Customer customer, Integer roomNumber, LocalDate checkInDate, LocalDate checkOutDate)
+            throws RoomNotFoundException {
+
+        IRoom room;
+        try {
+            room = getARoom(roomNumber);
+        } catch (RoomNotFoundException e) {
+            throw new RoomNotFoundException("Room number is not found in the system.");
+        }
+
+        return new Reservation(customer, room, checkInDate, checkOutDate);
+    }
 
     public Collection<IRoom> findRooms(LocalDate checkInDate, LocalDate checkOutDate) {
         // a list of available rooms
@@ -83,6 +98,10 @@ public class ReservationService {
     void sayHello() {
         System.out.println("Hello from the ReservationService.sayHello() method.");
 
+    }
+
+    public boolean isValidRoomNumber(Integer roomNumber) {
+        return theRooms.containsKey(roomNumber);
     }
 
 

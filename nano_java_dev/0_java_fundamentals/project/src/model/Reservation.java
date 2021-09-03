@@ -14,6 +14,9 @@ public class Reservation {
         this.room = room;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
+
+        // let the room know which reservation it belongs to
+        this.room.addReservation(this);
     }
 
     public LocalDate getCheckInDate() {

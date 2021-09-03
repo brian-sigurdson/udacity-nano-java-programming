@@ -3,8 +3,10 @@ package ui;
 import api.HotelResource;
 import exceptions.CustomerNotFoundException;
 import exceptions.DuplicateEntryException;
+import exceptions.RoomNotFoundException;
 import model.Customer;
 import model.IRoom;
+import model.Reservation;
 import service.ReservationService;
 
 import javax.annotation.processing.SupportedSourceVersion;
@@ -109,6 +111,8 @@ public class MainMenu {
         LocalDate checkInDate;
         LocalDate checkOutDate;
         Customer customer;
+        Reservation reservation;
+        Integer roomNumber;
 
             // 1) find and reserve a room
             // gather input
@@ -143,30 +147,53 @@ public class MainMenu {
             // present rooms available here
             MainMenu.viewAvailableRoomsForDates(checkInDate, checkOutDate);
 
-            // do they want to reserve a room?
-            System.out.println("Would you like to reserve a room?  y/yes, n/no.");
-            switch (scanner.next().toLowerCase()) {
-                case "y":
-                case "yes":
-                    customer = MainMenu.getUserAccount();
-                    System.out.println("Select a room number to reserve a room");
-                    MainMenu.selectRoomToReserve(scanner.nextInt());
-                    break;
-                case "n":
-                case "no":
-                    return;
-                default:
-                    MainMenu.invalidInputMessage();
-                    break;
+            outer: while (true) {
+                // do they want to reserve a room?
+                System.out.println("Would you like to reserve a room?  y/yes, n/no.");
+                switch (scanner.next().toLowerCase()) {
+                    case "y":
+                    case "yes":
+                        customer = MainMenu.getUserAccount();
+
+                        inner: while (true) {
+                            System.out.println("Select a room number to reserve a room:");
+                            try {
+                                roomNumber = Integer.parseInt(scanner.next());
+                                break inner;
+                            } catch (NumberFormatException e) {
+                                System.out.println("The room number is not a numeric value. Please try again.");
+                                continue inner;
+                            }
+                        }
+
+                        try {
+                            reservation = MainMenu.reserveRoom(customer, roomNumber, checkInDate, checkOutDate);
+                            // print reservation
+                            System.out.println(reservation);
+                            // done
+                            break outer;
+                        } catch (RoomNotFoundException e) {
+                            System.out.println("The room number you have entered is not found in the system.");
+                            System.out.println("Please try again.");
+                            continue;
+                        }
+                    case "n":
+                    case "no":
+                        return;
+                    default:
+                        MainMenu.invalidInputMessage();
+                        break;
+                }
             }
     }
 
     private static boolean isValidRoomNumber(Integer roomNumber) {
-
+        return ReservationService.getInstance().isValidRoomNumber(roomNumber);
     }
 
-    private static void reserveRoom(Integer roomNumber) {
-
+    private static Reservation reserveRoom(Customer customer, Integer roomNumber, LocalDate checkInDate,
+                                           LocalDate checkOutDate) throws RoomNotFoundException {
+        return ReservationService.getInstance().reserveRoom(customer, roomNumber, checkInDate, checkOutDate);
     }
 
     private static Customer getUserAccount() {
