@@ -6,6 +6,7 @@ import exceptions.DuplicateEntryException;
 import model.Customer;
 import model.IRoom;
 import service.CustomerService;
+import service.LoadTestData;
 
 import java.util.Collection;
 import java.util.Scanner;
@@ -67,8 +68,7 @@ public class AdminMenu {
                     AdminMenu.getAllRooms();
                     break;
                 case 3:
-                    // ** NOT IMPLEMENTED **
-                    System.out.println("3. See all Reservations");
+                    AdminMenu.loadTestData();
                     break;
                 case 4:
                     AdminMenu.createRoom();
@@ -85,6 +85,10 @@ public class AdminMenu {
 
             }
         }
+    }
+
+    private static void loadTestData() {
+        LoadTestData.loadAllData();
     }
 
     private static void getAllRooms() {
