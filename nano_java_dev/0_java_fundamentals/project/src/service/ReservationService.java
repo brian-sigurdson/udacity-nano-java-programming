@@ -90,11 +90,15 @@ public class ReservationService {
         return availableRooms;
     }
 
+    public Collection<Reservation> getAllReservations() {
+        return theReservations;
+    }
+
 //    public Collection<Reservation> getCustomerReservation(Customer customer) {
 //
 //    }
 
-    // an unnecessary method to satisfy the unnecessary requirement of having a method with default access.
+    // an unnecessary method to satisfy the requirement of having a method with default access.
     void sayHello() {
         System.out.println("Hello from the ReservationService.sayHello() method.");
 

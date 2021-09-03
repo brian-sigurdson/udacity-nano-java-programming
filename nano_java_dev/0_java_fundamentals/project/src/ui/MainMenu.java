@@ -187,9 +187,9 @@ public class MainMenu {
             }
     }
 
-    private static boolean isValidRoomNumber(Integer roomNumber) {
-        return ReservationService.getInstance().isValidRoomNumber(roomNumber);
-    }
+//    private static boolean isValidRoomNumber(Integer roomNumber) {
+//        return ReservationService.getInstance().isValidRoomNumber(roomNumber);
+//    }
 
     private static Reservation reserveRoom(Customer customer, Integer roomNumber, LocalDate checkInDate,
                                            LocalDate checkOutDate) throws RoomNotFoundException {

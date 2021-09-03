@@ -68,14 +68,13 @@ public class AdminMenu {
                     AdminMenu.getAllRooms();
                     break;
                 case 3:
-                    AdminMenu.loadTestData();
+                    AdminMenu.printAllReservations();
                     break;
                 case 4:
                     AdminMenu.createRoom();
                     break;
                 case 5:
-                    // ** NOT IMPLEMENTED **
-                    System.out.println("5. Load test data");
+                    AdminMenu.loadTestData();
                     break;
                 case 6:
                     return;
@@ -85,6 +84,10 @@ public class AdminMenu {
 
             }
         }
+    }
+
+    private static void printAllReservations() {
+        AdminResource.displayAllReservations();
     }
 
     private static void loadTestData() {
