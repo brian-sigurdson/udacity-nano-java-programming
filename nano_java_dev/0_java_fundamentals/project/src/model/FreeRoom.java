@@ -19,7 +19,7 @@ public class FreeRoom extends Room {
 
     Otherwise, I don't think it is really used.
      */
-    public FreeRoom(String roomNumber, Double price, Integer roomType) {
+    public FreeRoom(Integer roomNumber, Double price, Integer roomType) {
         super(roomNumber, 0.0, roomType);
     }
 

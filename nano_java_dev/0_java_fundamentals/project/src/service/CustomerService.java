@@ -31,7 +31,7 @@ public class CustomerService {
         return customerService;
     }
 
-    public void addCustomer(String email, String firstName, String lastName) throws IllegalArgumentException,
+    public void addCustomer(String email, String firstName, String lastName) throws DuplicateEntryException,
             DuplicateEntryException {
 
         if (theCustomers.containsKey(email)) {
