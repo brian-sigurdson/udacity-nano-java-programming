@@ -23,7 +23,7 @@ public class ReservationService {
 
     private Map<Integer, IRoom> theRooms = new HashMap<>();
     private Set<Reservation> theReservations = new HashSet<>();
-    private static ReservationService reservationService = new ReservationService();
+    private static ReservationService reservationService;
 
 
     private ReservationService() {
@@ -36,6 +36,11 @@ public class ReservationService {
      * @return the only class instance
      */
     public static ReservationService getInstance() {
+
+        if (reservationService == null) {
+            reservationService = new ReservationService();
+        }
+
         return reservationService;
     }
 
@@ -71,7 +76,9 @@ public class ReservationService {
             throw new RoomNotFoundException("Room number is not found in the system.");
         }
 
-        return new Reservation(customer, room, checkInDate, checkOutDate);
+        Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
+        theReservations.add(reservation);
+        return reservation;
     }
 
     public Collection<IRoom> findRooms(LocalDate checkInDate, LocalDate checkOutDate) {

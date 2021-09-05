@@ -33,9 +33,9 @@ public class LoadTestData {
             int numCustomers = loadCustomers();
             int numRooms = loadRooms();
             int numReservations = loadReservations();
-            System.out.println("The number of customers loaded: " + numCustomers);
-            System.out.println("The number of rooms loaded: " + numRooms);
-            System.out.println("The number of reservations loaded: " + numReservations);
+//            System.out.println("The number of customers loaded: " + numCustomers);
+//            System.out.println("The number of rooms loaded: " + numRooms);
+//            System.out.println("The number of reservations loaded: " + numReservations);
             dataLoaded = true;
         } else {
             System.out.println("The data has already been loaded.");
@@ -48,16 +48,23 @@ public class LoadTestData {
      */
     private static int loadCustomers() {
         // hard-coding values to keep it simple
-        String firstName = "first_name_";
-        String lastName = "last_name_";
-        String email = "@gmail.com";
+        String firstName = "initialized";
+        String lastName = "initialized";
+        String email = "initialized";
 
         for (int i = 0; i < NUMBER_CUSTOMERS; i++ ){
             try {
-                CustomerService.getInstance().addCustomer(firstName + i, lastName + i, firstName + email);
+                firstName = "first_name_" + i;
+                lastName = "last_name_" + i;
+                email = firstName + "@gmail.com";
+
+                CustomerService.getInstance().addCustomer(firstName, lastName, email);
             } catch (DuplicateEntryException e) {
                 // should not be an issue here
                 System.out.println("Duplicate entry in LoadTestData.loadCustomers()");
+            } catch (IllegalArgumentException e1) {
+                System.out.println(e1.getStackTrace());
+                System.out.println("firstname = " + firstName + ", lastname = " + lastName + ", email = " + email);
             }
         }
 
@@ -72,7 +79,7 @@ public class LoadTestData {
         // hard-coding values to keep it simple
         for (int i = 0; i < NUMBER_CUSTOMERS; i++ ){
             try {
-                AdminResource.addRoom(i + 100, i + 100.00, i % 2);
+                AdminResource.addRoom(i + 100, i + 100.00, (i % 2) + 1);
             } catch (DuplicateEntryException e) {
                 // should not be an issue here
                 System.out.println("Duplicate entry in LoadTestData.loadRooms()");

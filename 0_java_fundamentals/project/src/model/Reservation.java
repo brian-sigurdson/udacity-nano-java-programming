@@ -37,7 +37,7 @@ public class Reservation {
         String customerInfo = "Customer: " + customer.getFirstName() + " " + customer.getLastName();
         String customerEmail = "Customer email: " + customer.getEmail();
         String roomInfo = "Room: " + room.getRoomNumber() + " - " + room.getRoomType();
-        String roomPrice = "Price: " + room.getRoomPrice();
+        String roomPrice = "Price: $" + room.getRoomPrice();
         String checkIn = "Checkin " + checkInDate;
         String checkOut = "Checkout " + checkOutDate;
 

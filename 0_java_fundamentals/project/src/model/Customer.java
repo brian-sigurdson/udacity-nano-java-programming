@@ -18,13 +18,13 @@ public class Customer {
 
     public Customer(String firstName, String lastName, String email) throws IllegalArgumentException{
 
-        if (!Customer.pattern.matcher(email).matches()) {
+        if (Customer.pattern.matcher(email).matches()) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.email = email;
+        } else {
             throw new IllegalArgumentException();
         }
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
     }
 
     public String getFirstName() {

@@ -1,11 +1,9 @@
 package ui;
 
 import api.AdminResource;
-import api.HotelResource;
 import exceptions.DuplicateEntryException;
 import model.Customer;
 import model.IRoom;
-import service.CustomerService;
 import service.LoadTestData;
 
 import java.util.Collection;
@@ -21,6 +19,7 @@ public class AdminMenu {
     private static Scanner scanner = new Scanner(System.in);
 
     private static void displayAdminMenu() {
+        System.out.println();
         System.out.println("--------------------------------------------------");
         System.out.println("          Hotel Reservation Application          ");
         System.out.println("------------------ ADMIN MENU --------------------");

@@ -4,7 +4,6 @@ import exceptions.DuplicateEntryException;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
-import model.RoomType;
 import service.CustomerService;
 import service.ReservationService;
 
@@ -79,6 +78,7 @@ public class AdminResource {
         Collection<Reservation> reservations = ReservationService.getInstance().getAllReservations();
 
         for (Reservation reservation : reservations) {
+            System.out.println();
             System.out.println(reservation);
         }
     }

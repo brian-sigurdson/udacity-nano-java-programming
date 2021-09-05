@@ -4,9 +4,7 @@ import exceptions.CustomerNotFoundException;
 import exceptions.DuplicateEntryException;
 import model.Customer;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.DuplicateFormatFlagsException;
 import java.util.HashMap;
 
 /**
@@ -31,7 +29,7 @@ public class CustomerService {
         return customerService;
     }
 
-    public void addCustomer(String email, String firstName, String lastName) throws DuplicateEntryException,
+    public void addCustomer(String firstName, String lastName, String email) throws DuplicateEntryException,
             DuplicateEntryException {
 
         if (theCustomers.containsKey(email)) {

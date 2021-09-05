@@ -38,7 +38,7 @@ public class Room implements IRoom {
                 break;
             default:
                 // technically, we should never get here, but add default for completeness
-                throw new IllegalArgumentException("Invalid room type.");
+                throw new IllegalArgumentException("Invalid room of type: " + roomType.intValue());
         }
 
         // test and set room number

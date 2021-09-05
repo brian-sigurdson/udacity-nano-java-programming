@@ -2,13 +2,14 @@ package api;
 
 import exceptions.CustomerNotFoundException;
 import exceptions.DuplicateEntryException;
+import exceptions.RoomNotFoundException;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
 import service.CustomerService;
-
+import service.ReservationService;
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 
 // TODO: vague description of this class.
 // leave and come back once I have finished the other setup tasks
@@ -38,6 +39,24 @@ public class HotelResource {
             DuplicateEntryException {
 
         CustomerService.getInstance().addCustomer(email, firstName, lastName);
+    }
+
+    public static Collection<Reservation> getCustomerReservations(Customer customer) {
+        return ReservationService.getInstance().getCustomerReservations(customer);
+    }
+
+    public static boolean isValidRoomNumber(Integer roomNumber) {
+        return ReservationService.getInstance().isValidRoomNumber(roomNumber);
+    }
+
+    public static Collection<IRoom> findRooms(LocalDate checkInDate, LocalDate checkOutDate) {
+        return ReservationService.getInstance().findRooms(checkInDate, checkOutDate);
+    }
+
+    public static Reservation reserveRoom(Customer customer, Integer roomNumber, LocalDate checkInDate, LocalDate checkOutDate)
+            throws RoomNotFoundException {
+
+        return ReservationService.getInstance().reserveRoom(customer, roomNumber, checkInDate, checkOutDate);
     }
 
 //    public IRoom getRoom(String roomNumber) {

@@ -8,9 +8,6 @@ import exceptions.RoomNotFoundException;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
-import service.ReservationService;
-
-import javax.annotation.processing.SupportedSourceVersion;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -40,6 +37,7 @@ public class MainMenu {
      * The main menu.
      */
     private static void displayMainMenu() {
+        System.out.println();
         System.out.println("--------------------------------------------------");
         System.out.println("          Hotel Reservation Application          ");
         System.out.println("------------------- MAIN MENU --------------------");
@@ -110,7 +108,7 @@ public class MainMenu {
 
         try {
             customer = MainMenu.getUserAccount();
-            reservations = ReservationService.getInstance().getCustomerReservations(customer);
+            reservations = HotelResource.getCustomerReservations(customer);
         } catch (CustomerNotFoundException e) {
             System.out.println();
             System.out.println("*******************************");
@@ -121,6 +119,7 @@ public class MainMenu {
         }
 
         for (Reservation reservation: reservations) {
+            System.out.println();
             System.out.println(reservation);
         }
     }
@@ -146,16 +145,18 @@ public class MainMenu {
         }
 
         // present rooms available to user
-        System.out.println("The following rooms meet your requested check-in and check-out dates.");
+        System.out.println();
         MainMenu.viewAvailableRoomsForDates(checkInDate, checkOutDate);
 
         // do they want to reserve a room?
         outer: while (true) {
+            System.out.println();
             System.out.println("Would you like to reserve a room?  Y (Yes), N (No)");
             switch (scanner.next().toLowerCase()) {
                 case "y":
                 case "yes":
                     while (true) {
+                        System.out.println();
                         System.out.println("An account is required to reserve a room.");
                         System.out.println("Do you already have an account with us?  Please enter Y (Yes), N (No), E (Exit)");
                         switch (scanner.next().toLowerCase()) {
@@ -204,6 +205,7 @@ public class MainMenu {
         while (true) {
             try {
                 // now select a room
+                System.out.println();
                 roomNumber = MainMenu.selectARoomToReserve(checkInDate, checkOutDate);
                 if (!MainMenu.isValidRoomNumber(roomNumber)) {
                     throw new RoomNotFoundException();
@@ -213,7 +215,9 @@ public class MainMenu {
                 reservation = MainMenu.reserveRoom(customer, roomNumber, checkInDate, checkOutDate);
 
                 // now print reservation
+                System.out.println();
                 System.out.println(reservation);
+                break;
             } catch (CustomerChoseExitException e) {
                 return;
             } catch (RoomNotFoundException e) {
@@ -224,7 +228,7 @@ public class MainMenu {
     }
 
     private static boolean isValidRoomNumber(int roomNumber) {
-        return ReservationService.getInstance().isValidRoomNumber(roomNumber);
+        return HotelResource.isValidRoomNumber(roomNumber);
     }
 
     private static String createAccount() {
@@ -237,7 +241,7 @@ public class MainMenu {
 
             // create new account or throw exception
             try {
-                HotelResource.createACustomer(email, firstName, lastName);
+                HotelResource.createACustomer(firstName, lastName, email);
             } catch (IllegalArgumentException e) {
                 System.out.println();
                 System.out.println("*****************************");
@@ -330,10 +334,11 @@ public class MainMenu {
 
         // limit the checking of available rooms to 2 iterations
         for (int i = 0; i < maxIterations; i++) {
-            Collection<IRoom> availableRooms = ReservationService.getInstance().findRooms(checkInDate, checkOutDate);
+            Collection<IRoom> availableRooms = HotelResource.findRooms(checkInDate, checkOutDate);
 
             if (availableRooms.size() == 0 && i == 0) {
                 // no rooms available on the first iteration
+                System.out.println();
                 System.out.println("There are not any rooms available for your desired dates.");
                 System.out.println("We will check for room availability by shifting your date range 7 days into the future");
                 checkInDate = checkInDate.plusDays(7);
@@ -343,22 +348,25 @@ public class MainMenu {
 
             if (availableRooms.size() == 0 && i == 1) {
                 // no rooms available on the second iteration
+                System.out.println();
                 System.out.println("There are not any rooms available for your desired dates.");
                 System.out.println("Please try a different date range.");
                 return;
             }
 
             // if you've made it here, then there are rooms to display
+            System.out.println();
             System.out.println("The following rooms are available for your requested dates.");
             for (IRoom room : availableRooms) {
                 System.out.println(room);
             }
+            break;
         }
     }
 
     private static Reservation reserveRoom(Customer customer, Integer roomNumber, LocalDate checkInDate,
                                            LocalDate checkOutDate) throws RoomNotFoundException {
-        return ReservationService.getInstance().reserveRoom(customer, roomNumber, checkInDate, checkOutDate);
+        return HotelResource.reserveRoom(customer, roomNumber, checkInDate, checkOutDate);
     }
 
     private static int selectARoomToReserve(LocalDate checkInDate, LocalDate checkOutDate)
@@ -389,6 +397,7 @@ public class MainMenu {
 
         while (true) {
             // gather user input to create an account
+            System.out.println();
             System.out.println("Enter Email format: name@domain.com");
             email = scanner.next();
 
@@ -405,6 +414,7 @@ public class MainMenu {
         String firstName;
 
         while (true) {
+            System.out.println();
             System.out.println("Enter first name:");
             firstName = scanner.next();
 
@@ -421,6 +431,7 @@ public class MainMenu {
         String lastName;
 
         while (true) {
+            System.out.println();
             System.out.println("Enter last name:");
             lastName = scanner.next();
 
