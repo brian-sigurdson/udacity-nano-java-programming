@@ -9,13 +9,24 @@ package exceptions;
 public class RoomNotFoundException extends Exception{
     private String message;
 
+    /**
+     * A RoomNotFoundException constructor
+     */
     public RoomNotFoundException() {
     }
 
+    /**
+     * RoomNotFoundException
+     * @param msg
+     */
     public RoomNotFoundException(String msg) {
         message = msg;
     }
 
+    /**
+     * A method for the default printing of an object.
+     * @return a string representation of the object
+     */
     @Override
     public String toString() {
         return message;

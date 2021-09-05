@@ -18,8 +18,6 @@ import java.util.regex.Pattern;
  *
  * @author Brian Sigurdson
  */
-
-
 public class MainMenu {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -33,9 +31,6 @@ public class MainMenu {
         MainMenu.getUserSelection();
     }
 
-    /**
-     * The main menu.
-     */
     private static void displayMainMenu() {
         System.out.println();
         System.out.println("--------------------------------------------------");

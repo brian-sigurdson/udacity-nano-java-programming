@@ -1,17 +1,12 @@
 package service;
 
 import api.AdminResource;
-import api.HotelResource;
 import exceptions.DuplicateEntryException;
 import exceptions.RoomNotFoundException;
 import model.Customer;
 import model.IRoom;
-import model.Reservation;
-import model.Room;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * A class to load test data for the hotel application.
@@ -20,9 +15,6 @@ import java.util.Collection;
 public class LoadTestData {
     private static final int NUMBER_CUSTOMERS = 10;
     private static boolean dataLoaded = false;
-//    private static ArrayList<Customer> customers = new ArrayList<>();
-//    private static ArrayList<IRoom> rooms = new ArrayList<>();
-//    private static ArrayList<Reservation> reservations = new ArrayList<>();
 
     /**
      * A method to create customers.

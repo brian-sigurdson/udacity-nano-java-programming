@@ -1,14 +1,23 @@
 package model;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
+/**
+ * A class to represent reservations
+ */
 public class Reservation {
     private Customer customer;
     private IRoom room;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
+    /**
+     * A Reservation constructor
+     * @param customer
+     * @param room
+     * @param checkInDate
+     * @param checkOutDate
+     */
     public Reservation(Customer customer, IRoom room, LocalDate checkInDate, LocalDate checkOutDate) {
         this.customer = customer;
         this.room = room;
@@ -19,18 +28,34 @@ public class Reservation {
         this.room.addReservation(this);
     }
 
+    /**
+     * A method to get this customer
+     * @return this customer
+     */
     public Customer getCustomer() {
         return customer;
     }
 
+    /**
+     * A method to get the checkin date
+     * @return checkin date
+     */
     public LocalDate getCheckInDate() {
         return checkInDate;
     }
 
+    /**
+     * A method to get the checkout date
+     * @return checkout date
+     */
     public LocalDate getCheckOutDate() {
         return checkOutDate;
     }
 
+    /**
+     * A method for the default printing of an object.
+     * @return a string representation of the object
+     */
     @Override
     public String toString() {
         String reservationHeader = "RESERVATION DETAILS:";
@@ -56,6 +81,11 @@ public class Reservation {
                 checkOut;
     }
 
+    /**
+     * A method to test for object equality
+     * @param object
+     * @return true or false
+     */
     @Override
     public boolean equals(Object object) {
         if (object == this){
@@ -72,6 +102,10 @@ public class Reservation {
         }
     }
 
+    /**
+     * A method to determine an object's hashcode
+     * @return the object's hashcode
+     */
     @Override
     public int hashCode () {
         // The recipe for a proper hash code, from Effective Java 3rd ed.

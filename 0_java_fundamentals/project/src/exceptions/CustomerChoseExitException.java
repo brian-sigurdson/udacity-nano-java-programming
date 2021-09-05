@@ -9,13 +9,23 @@ package exceptions;
 public class CustomerChoseExitException extends Exception{
     private String message;
 
+    /**
+     * A CustomerChoseExitException constructor
+     */
     public CustomerChoseExitException() {
     }
 
+    /**
+     * A CustomerChoseExitException constructor
+     */
     public CustomerChoseExitException(String msg) {
         message = msg;
     }
 
+    /**
+     * A method for the default printing of an object.
+     * @return a string representation of the object
+     */
     @Override
     public String toString() {
         return message;

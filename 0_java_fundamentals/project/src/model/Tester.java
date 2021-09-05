@@ -1,7 +1,8 @@
 package model;
 
-import javax.rmi.ssl.SslRMIClientSocketFactory;
-
+/**
+ * A class for initial testing.
+ */
 public class Tester {
     public static void main(String[] args) {
         Customer customer = new Customer("firstname", "lastname", "j@domain.com");

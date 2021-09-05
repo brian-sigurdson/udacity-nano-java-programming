@@ -1,7 +1,5 @@
 package model;
 
-import ui.MainMenu;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +7,24 @@ import java.util.List;
 /**
  * A class to model a room in the hotel.
  */
-
 public class Room implements IRoom {
     private Integer roomNumber;
     private Double price;
     private RoomType enumeration;
     private List<Reservation> myReservations = new ArrayList<>();
 
+    /**
+     * A Room constructor.
+     */
     public Room() {    }
 
+    /**
+     * A parameterized room constructor.
+     * @param roomNumber
+     * @param price
+     * @param roomType
+     * @throws IllegalArgumentException
+     */
     public Room(Integer roomNumber, Double price, Integer roomType) throws IllegalArgumentException {
         // test and set price
         if (price < 0) {
@@ -42,7 +49,6 @@ public class Room implements IRoom {
         }
 
         // test and set room number
-        // Although we say it is a number, we'll leave it a string, because often room identifiers could have numeric values
         if (roomNumber == null) {
             throw new IllegalArgumentException("Invalid room number.");
         } else {
@@ -50,10 +56,20 @@ public class Room implements IRoom {
         }
     }
 
+    /**
+     * A method to add a reservation.
+     * @param reservation
+     */
     public void addReservation(Reservation reservation) {
         myReservations.add(reservation);
     }
 
+    /**
+     * A method to check if a room is available.
+     * @param checkInDate
+     * @param checkOutDate
+     * @return
+     */
     public boolean isAvailable(LocalDate checkInDate, LocalDate checkOutDate) {
         // iterate over this room's reservations and determine if the room is available for the given dates.
         for (Reservation reservation : myReservations) {
@@ -97,33 +113,56 @@ public class Room implements IRoom {
         return true;
     }
 
+    /**
+     * A method to get a room number.
+     * @return room number
+     */
     @Override
     public Integer getRoomNumber() {
         return roomNumber;
     }
 
+    /**
+     * A method to get a room price.
+     * @return room price
+     */
     @Override
     public Double getRoomPrice() {
         return price;
     }
 
+    /**
+     * A method to get a room type.
+     * @return room type
+     */
     @Override
     public RoomType getRoomType() {
         return enumeration;
     }
 
-    // TODO: isFree() is not implemented
+    /**
+     * A method to to determine if a room is a free type room.
+     * @return
+     */
     @Override
     public Boolean isFree() {
         return false;
     }
 
-    // TODO: Double check that this is in line with the example output
+    /**
+     * A method for the default printing of an object.
+     * @return a string representation of the object
+     */
     @Override
     public String toString() {
         return "[Room number: " + roomNumber + ", Price: " + price + ", Room type: " + enumeration + "]";
     }
 
+    /**
+     * A method to test for object equality
+     * @param object
+     * @return true or false
+     */
     @Override
     public boolean equals(Object object) {
         if (object == null) {
@@ -143,6 +182,10 @@ public class Room implements IRoom {
         }
     }
 
+    /**
+     * A method to determine an object's hashcode
+     * @return the object's hashcode
+     */
     @Override
     public int hashCode () {
         // The recipe for a proper hash code, from Effective Java 3rd ed.

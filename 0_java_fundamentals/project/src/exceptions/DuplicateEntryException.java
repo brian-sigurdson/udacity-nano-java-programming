@@ -9,13 +9,23 @@ package exceptions;
 public class DuplicateEntryException extends Exception{
     private String message;
 
+    /**
+     * A DuplicateEntryException constructor
+     */
     public DuplicateEntryException() {
     }
 
+    /**
+     * A DuplicateEntryException constructor
+     */
     public DuplicateEntryException(String msg) {
         message = msg;
     }
 
+    /**
+     * A method for the default printing of an object.
+     * @return a string representation of the object
+     */
     @Override
     public String toString() {
         return message;

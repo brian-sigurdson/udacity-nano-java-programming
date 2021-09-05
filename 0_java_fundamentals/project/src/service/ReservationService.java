@@ -12,8 +12,6 @@ import model.Room;
 import java.time.LocalDate;
 import java.util.*;
 
-// TODO:  per rubrick.  need at least one use of public, private, and default methods.
-
 /**
  * A class to provide access to the application's model classes.
  *
@@ -44,6 +42,14 @@ public class ReservationService {
         return reservationService;
     }
 
+    /**
+     * A method to add a room.
+     * @param roomNumber
+     * @param price
+     * @param roomType
+     * @throws IllegalArgumentException
+     * @throws DuplicateEntryException
+     */
     public void addRoom(Integer roomNumber, Double price, Integer roomType) throws IllegalArgumentException,
             DuplicateEntryException {
 
@@ -54,6 +60,10 @@ public class ReservationService {
         theRooms.put(roomNumber, new Room(roomNumber, price, roomType ));
     }
 
+    /**
+     * A method to get all rooms.
+     * @return a collection of rooms
+     */
     public Collection<IRoom> getAllRooms() {
         return theRooms.values();
     }
@@ -66,6 +76,15 @@ public class ReservationService {
         }
     }
 
+    /**
+     * A method to reserve a room
+     * @param customer
+     * @param roomNumber
+     * @param checkInDate
+     * @param checkOutDate
+     * @return a reservation object
+     * @throws RoomNotFoundException
+     */
     public Reservation reserveRoom(Customer customer, Integer roomNumber, LocalDate checkInDate, LocalDate checkOutDate)
             throws RoomNotFoundException {
 
@@ -81,6 +100,12 @@ public class ReservationService {
         return reservation;
     }
 
+    /**
+     * A method to find all rooms available for a checkin and checkout dates.
+     * @param checkInDate
+     * @param checkOutDate
+     * @return A collection of available rooms.
+     */
     public Collection<IRoom> findRooms(LocalDate checkInDate, LocalDate checkOutDate) {
         // a list of available rooms
         Collection<IRoom> availableRooms = new ArrayList<>();
@@ -97,10 +122,19 @@ public class ReservationService {
         return availableRooms;
     }
 
+    /**
+     * A method to get all reservations.
+     * @return a collection of all reservations
+     */
     public Collection<Reservation> getAllReservations() {
         return theReservations;
     }
 
+    /**
+     * A method to get all customer reservations
+     * @param customer
+     * @return a collection of customer reservations
+     */
     public Collection<Reservation> getCustomerReservations(Customer customer) {
         Collection<Reservation> customerReservations = new ArrayList<>();
 
@@ -119,6 +153,11 @@ public class ReservationService {
 
     }
 
+    /**
+     * A method to test for room number validity
+     * @param roomNumber
+     * @return true or false
+     */
     public boolean isValidRoomNumber(Integer roomNumber) {
         return theRooms.containsKey(roomNumber);
     }

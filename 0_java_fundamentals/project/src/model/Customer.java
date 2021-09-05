@@ -39,11 +39,20 @@ public class Customer {
         return email;
     }
 
+    /**
+     * A method for the default printing of an object.
+     * @return a string representation of the object
+     */
     @Override
     public String toString() {
         return "[First name: " + firstName + ", Last name: " + lastName + ", email: " + email + "]";
     }
 
+    /**
+     * A method to test for object equality
+     * @param object
+     * @return true or false
+     */
     @Override
     public boolean equals(Object object) {
         if (object == this){
@@ -58,6 +67,10 @@ public class Customer {
         }
     }
 
+    /**
+     * A method to determine an object's hashcode
+     * @return the object's hashcode
+     */
     @Override
     public int hashCode () {
         // The recipe for a proper hash code, from Effective Java 3rd ed.

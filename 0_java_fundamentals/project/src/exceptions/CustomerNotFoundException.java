@@ -9,13 +9,23 @@ package exceptions;
 public class CustomerNotFoundException extends Exception{
     private String message;
 
+    /**
+     * A CustomerNotFoundException constructor
+     */
     public CustomerNotFoundException() {
     }
 
+    /**
+     * A CustomerNotFoundException constructor
+     */
     public CustomerNotFoundException(String msg) {
         message = msg;
     }
 
+    /**
+     * A method for the default printing of an object.
+     * @return a string representation of the object
+     */
     @Override
     public String toString() {
         return message;

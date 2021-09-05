@@ -29,6 +29,14 @@ public class CustomerService {
         return customerService;
     }
 
+    /**
+     * A method to add a customer
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @throws DuplicateEntryException
+     * @throws DuplicateEntryException
+     */
     public void addCustomer(String firstName, String lastName, String email) throws DuplicateEntryException,
             DuplicateEntryException {
 
@@ -39,6 +47,12 @@ public class CustomerService {
         theCustomers.put(email, new Customer(firstName, lastName, email));
     }
 
+    /**
+     * A method to get a customer
+     * @param customerEmail
+     * @return
+     * @throws CustomerNotFoundException
+     */
     public Customer getCustomer(String customerEmail) throws CustomerNotFoundException {
         if (theCustomers.containsKey(customerEmail)) {
             return theCustomers.get(customerEmail);
@@ -47,6 +61,10 @@ public class CustomerService {
         }
     }
 
+    /**
+     * A method to get all customers.
+     * @return a collection of all customers
+     */
     public Collection<Customer> getAllCustomers() {
         return theCustomers.values();
     }
