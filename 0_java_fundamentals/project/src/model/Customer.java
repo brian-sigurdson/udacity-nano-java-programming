@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
  * @author Brian Sigurdson
  */
 public class Customer {
-    private static String emailRegex = "^(.+)@(.+).com$";
-    private static Pattern pattern = Pattern.compile(emailRegex);
+    private static final String emailRegex = "^(.+)@(.+).com$";
+    private static final Pattern pattern = Pattern.compile(emailRegex);
 
-    private String firstName;
-    private String lastName;
-    private String email;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
 
 
     public Customer(String firstName, String lastName, String email) throws IllegalArgumentException{
