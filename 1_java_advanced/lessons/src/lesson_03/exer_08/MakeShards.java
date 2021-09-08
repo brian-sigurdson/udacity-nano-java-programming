@@ -1,5 +1,7 @@
 package lesson_03.exer_08;
 
+import java.io.BufferedReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -13,7 +15,24 @@ public final class MakeShards {
         }
 
         Path input = Path.of(args[0]);
-        Path outputFolder = Files.createDirectory(Path.of(args[1]));
+//        Path outputFolder = Files.createDirectory(Path.of(args[1]));
+        Path outputFolder = Path.of(args[1]);
+
+        System.out.println("Input: " + input);
+        System.out.println("Input abs path: " + input.toAbsolutePath());
+        System.out.println("Input: " + outputFolder);
+        System.out.println("Input: " + outputFolder.toAbsolutePath());
+
+//        BufferedReader reader = Files.newBufferedReader(Path.of("test"), StandardCharsets.UTF_8);
+        BufferedReader reader = Files.newBufferedReader(input.toAbsolutePath(), StandardCharsets.UTF_8);
+        String line;
+        int cnt = 0;
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+
+            if (++cnt == 5) break;
+        }
+        reader.close();
 
         // TODO: Read the unsorted words from the "input" Path, line by line. Write the input words to
         //       many shard files. Each shard file should contain at most SHARD_SIZE words, in sorted
