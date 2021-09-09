@@ -14,9 +14,21 @@ public final class MakeShards {
             return;
         }
 
+        /*
+        Okay, all of this actually works from the cli, but i still barely understand it.
+        Take the time to watch the PS vids on file i/o and get a better understanding.
+        I won't be an expert, but I won't be guessing either.
+
+        Although
+         */
         Path input = Path.of(args[0]);
 //        Path outputFolder = Files.createDirectory(Path.of(args[1]));
         Path outputFolder = Path.of(args[1]);
+
+        if (!Files.isDirectory(outputFolder)){
+            // create the dir only if it doesn't exist
+            outputFolder = Files.createDirectory(Path.of(String.valueOf(outputFolder)));
+        }
 
         System.out.println("Input: " + input);
         System.out.println("Input abs path: " + input.toAbsolutePath());
@@ -24,7 +36,7 @@ public final class MakeShards {
         System.out.println("Input: " + outputFolder.toAbsolutePath());
 
 //        BufferedReader reader = Files.newBufferedReader(Path.of("test"), StandardCharsets.UTF_8);
-        BufferedReader reader = Files.newBufferedReader(input.toAbsolutePath(), StandardCharsets.UTF_8);
+        BufferedReader reader = Files.newBufferedReader(input, StandardCharsets.UTF_8);
         String line;
         int cnt = 0;
         while ((line = reader.readLine()) != null) {
