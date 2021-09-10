@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// TODO: Read the unsorted words from the "input" Path, line by line. Write the input words to
+//       many shard files. Each shard file should contain at most SHARD_SIZE words, in sorted
+//       order. All the words should be accounted for in the output shard files; you should not
+//       skip any words. Write the shard files in the newly created "outputFolder", using the
+//       getOutputFileName(int) method to name the individual shard files.
+
 public final class MakeShards {
     private static final int SHARD_SIZE = 100;
     private static final List<String> shard = new ArrayList<>();
@@ -19,13 +25,6 @@ public final class MakeShards {
             return;
         }
 
-        /*
-        Okay, all of this actually works from the cli, but i still barely understand it.
-        Take the time to watch the PS vids on file i/o and get a better understanding.
-        I won't be an expert, but I won't be guessing either.
-
-        Although
-         */
         Path input = Path.of(args[0]);
         Path outputFolder = Path.of(args[1]);
 
@@ -36,34 +35,32 @@ public final class MakeShards {
 
         BufferedReader reader = Files.newBufferedReader(input, StandardCharsets.UTF_8);
         String line;
-        int cnt = 0;
         int shard_num = 0;
         while ((line = reader.readLine()) != null) {
-//            System.out.println(line);
 
-            if (cnt++ < MakeShards.SHARD_SIZE) {
+            if (shard.size() < MakeShards.SHARD_SIZE) {
                 // store the next word
                 shard.add(line);
             } else {
                 // time to write to the next file
-                cnt = 0;
-                try( BufferedWriter bufferedWriter = Files.newBufferedWriter(outputFolder, StandardCharsets.UTF_8);) {
+                // get a writer
+                try( BufferedWriter bufferedWriter = Files.newBufferedWriter(
+                        outputFolder.resolve(MakeShards.getOutputFileName(shard_num++)), StandardCharsets.UTF_8);) {
+
+                    // sort
                     Collections.sort(shard);
+
+                    // write to file
                     for (String val: shard) {
                         bufferedWriter.write(val + System.lineSeparator());
                     }
                 }
-
-
+                // empty the list
+                shard.clear();
             }
         }
         reader.close();
 
-        // TODO: Read the unsorted words from the "input" Path, line by line. Write the input words to
-        //       many shard files. Each shard file should contain at most SHARD_SIZE words, in sorted
-        //       order. All the words should be accounted for in the output shard files; you should not
-        //       skip any words. Write the shard files in the newly created "outputFolder", using the
-        //       getOutputFileName(int) method to name the individual shard files.
     }
 
     private static String getOutputFileName(int shardNum) {
