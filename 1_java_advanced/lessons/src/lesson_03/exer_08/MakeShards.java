@@ -1,12 +1,17 @@
 package lesson_03.exer_08;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public final class MakeShards {
     private static final int SHARD_SIZE = 100;
+    private static final List<String> shard = new ArrayList<>();
 
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
@@ -22,7 +27,6 @@ public final class MakeShards {
         Although
          */
         Path input = Path.of(args[0]);
-//        Path outputFolder = Files.createDirectory(Path.of(args[1]));
         Path outputFolder = Path.of(args[1]);
 
         if (!Files.isDirectory(outputFolder)){
@@ -30,19 +34,28 @@ public final class MakeShards {
             outputFolder = Files.createDirectory(Path.of(String.valueOf(outputFolder)));
         }
 
-        System.out.println("Input: " + input);
-        System.out.println("Input abs path: " + input.toAbsolutePath());
-        System.out.println("Input: " + outputFolder);
-        System.out.println("Input: " + outputFolder.toAbsolutePath());
-
-//        BufferedReader reader = Files.newBufferedReader(Path.of("test"), StandardCharsets.UTF_8);
         BufferedReader reader = Files.newBufferedReader(input, StandardCharsets.UTF_8);
         String line;
         int cnt = 0;
+        int shard_num = 0;
         while ((line = reader.readLine()) != null) {
-            System.out.println(line);
+//            System.out.println(line);
 
-            if (++cnt == 5) break;
+            if (cnt++ < MakeShards.SHARD_SIZE) {
+                // store the next word
+                shard.add(line);
+            } else {
+                // time to write to the next file
+                cnt = 0;
+                try( BufferedWriter bufferedWriter = Files.newBufferedWriter(outputFolder, StandardCharsets.UTF_8);) {
+                    Collections.sort(shard);
+                    for (String val: shard) {
+                        bufferedWriter.write(val + System.lineSeparator());
+                    }
+                }
+
+
+            }
         }
         reader.close();
 
@@ -54,6 +67,7 @@ public final class MakeShards {
     }
 
     private static String getOutputFileName(int shardNum) {
+
         return String.format("shard%02d.txt", shardNum);
     }
 }
