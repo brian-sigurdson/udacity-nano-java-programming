@@ -1,6 +1,8 @@
 package lesson_03.exer_11;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -16,8 +18,30 @@ public final class MergeShards {
         }
 
         List<Path> inputs = Files.walk(Path.of(args[0]), 1).skip(1).collect(Collectors.toList());
+
+//        inputs.forEach(System.out::println);
+//        if (true) return;
+
         List<BufferedReader> readers = new ArrayList<>(inputs.size());
         Path outputPath = Path.of(args[1]);
+
+//        BufferedReader reader = Files.newBufferedReader(input, StandardCharsets.UTF_8);
+
+
+        // i guess this is what it needs?
+        try {
+            inputs.forEach((n) -> {
+                try {
+                    readers.add(Files.newBufferedReader(n, StandardCharsets.UTF_8));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } finally {
+            
+        }
+
+
 
         // TODO: Inside a try-finally block, create the List of BufferedReaders: one for each "input"
         //       Path. Without modifying the shard files, merge them together into a single text file
