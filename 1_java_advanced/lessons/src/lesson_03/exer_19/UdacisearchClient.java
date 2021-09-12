@@ -1,4 +1,4 @@
-package lesson_03.lesson_03.exer_15;
+package lesson_03.exer_19;
 
 import java.io.Serializable;
 import java.time.Duration;

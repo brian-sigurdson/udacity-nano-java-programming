@@ -1,6 +1,4 @@
-package lesson_03.lesson_03.exer_15.lesson_03.exer_15;
-
-import lesson_03.lesson_03.exer_15.UdacisearchClient;
+package lesson_03.exer_15;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,10 +11,7 @@ import java.time.ZoneId;
 public final class Main {
     public static void main(String[] args) throws Exception {
 
-//        if (args.length != 1) {
-//            System.out.println("Usage: Main [file path]");
-//            return;
-//        }
+//        if (ar
 
         UdacisearchClient client =
                 new UdacisearchClient(
