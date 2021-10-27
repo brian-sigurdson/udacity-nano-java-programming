@@ -19,10 +19,10 @@ public final class UdacisearchClient implements Serializable {
         this.name = builder.name;
         this.id = builder.id;
         this.quarterlyBudget = builder.quarterlyBudget;
-        this.numEmployees = builder.numEmployees;;
-        this.contractStart = builder.contractStart;;
-        this.contractLength = builder.contractLength;;
-        this.timeZone = builder.timeZone;;
+        this.numEmployees = builder.numEmployees;
+        this.contractStart = builder.contractStart;
+        this.contractLength = builder.contractLength;
+        this.timeZone = builder.timeZone;
         this.billingAddress = builder.billingAddress;
     }
 
