@@ -8,7 +8,7 @@ Coursework for the Udacity Java Programming Nanodegree.  The course has three pr
 2. Advanced Java Programming
    * Functional Programming, File I/O, Design Patterns, Reflection, Concurrent Programming
    * The application for section 2 is a legacy web crawler.
-   * I have not completed this project yet, but my work so far is found [here](https://github.com/brian-sigurdson/udacity-nano-java-programming/tree/main/1_java_advanced/lessons/src)
+   * I have not completed this project yet, but my work so far is found [here](https://github.com/brian-sigurdson/udacity-nano-java-programming/tree/main/1_java_advanced/lessons/src).
 3. Java Application Deployment
    * Running applications, Mavan, Java Modules, Unit Testing, Mocking and Integration Testing
    * I have not yet completed this application.
