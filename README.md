@@ -2,7 +2,7 @@
 Coursework for the Udacity Java Programming Nanodegree.  The course has three projects that are described below.
 
 1. Java Fundamentals
-   * Java basics and object oriented programming (OOP).
+   * Java basics and object-oriented programming (OOP).
    * The application for section 1 is a hotel reservation application.
    * My application [here](https://github.com/brian-sigurdson/udacity-nano-java-programming/tree/main/0_java_fundamentals/project/src).
 2. Advanced Java Programming
