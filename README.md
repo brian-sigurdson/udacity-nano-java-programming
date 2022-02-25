@@ -1,5 +1,5 @@
 # Udacity Java Programming Nanodegree
-Coursework for the Udacity Java Programming Nanodegree.  The course has three projects that are described below.
+Coursework for the Udacity Java Programming Nanodegree.  The course has three sections and three projects that are described below.
 
 1. Java Fundamentals
    * Java basics and object-oriented programming (OOP).
